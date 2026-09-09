@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+.tok
+.anker_watch_state.json
+template.json
+.watch.wav
+.DS_Store

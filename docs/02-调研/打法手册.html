@@ -1,0 +1,447 @@
+<title>录音豆赛道打法</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --paper:#F5F6F4; --panel:#FFFFFF; --sunk:#EAECE9;
+  --ink:#14181A; --ink-2:#414A4E; --ink-3:#74807F;
+  --rule:#DADEDA; --rule-2:#C4CAC6;
+  --steel:#1F5F73; --steel-soft:#E1EDF1;
+  --kill:#A83A2A; --kill-soft:#F7E7E3;
+  --gap:#2C6E4A; --gap-soft:#E2EFE7;
+  --warn:#9A6B12; --warn-soft:#F7EEDC;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1214; --panel:#161B1E; --sunk:#1C2326;
+    --ink:#ECEFEE; --ink-2:#AAB4B5; --ink-3:#79868A;
+    --rule:#283134; --rule-2:#374245;
+    --steel:#6EB4CC; --steel-soft:#132A33;
+    --kill:#E58873; --kill-soft:#331C17;
+    --gap:#6BBF90; --gap-soft:#152920;
+    --warn:#D9A945; --warn-soft:#2C2411;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1214; --panel:#161B1E; --sunk:#1C2326;
+  --ink:#ECEFEE; --ink-2:#AAB4B5; --ink-3:#79868A;
+  --rule:#283134; --rule-2:#374245;
+  --steel:#6EB4CC; --steel-soft:#132A33;
+  --kill:#E58873; --kill-soft:#331C17;
+  --gap:#6BBF90; --gap-soft:#152920;
+  --warn:#D9A945; --warn-soft:#2C2411;
+}
+*{box-sizing:border-box}
+body{background:var(--paper); color:var(--ink); margin:0;
+  font-family:"Noto Sans SC",-apple-system,"PingFang SC",sans-serif; font-size:15px; line-height:1.75;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:960px; margin:0 auto; padding:0 24px 100px}
+h1,h2,h3,h4{font-family:"Noto Serif SC",Georgia,"Songti SC",serif; margin:0; text-wrap:balance}
+.mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace; font-variant-numeric:tabular-nums}
+
+.mast{padding:52px 0 26px; border-bottom:2px solid var(--ink)}
+.kick{font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--steel); font-weight:700; margin-bottom:13px}
+.mast h1{font-size:clamp(28px,5vw,42px); font-weight:700; letter-spacing:-.01em; line-height:1.2}
+.mast p{color:var(--ink-2); margin:14px 0 0; max-width:66ch; font-size:15px}
+.prov{margin-top:18px; font-size:12px; color:var(--ink-3); display:flex; flex-wrap:wrap; gap:6px 20px}
+.prov b{color:var(--ink-2); font-weight:500}
+
+/* verdict */
+.verdict{margin-top:32px; border:2px solid var(--steel); background:var(--steel-soft); padding:22px 24px}
+.verdict .lab{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--steel); font-weight:700; margin-bottom:10px}
+.verdict h2{font-size:24px; margin-bottom:8px}
+.verdict p{margin:0; color:var(--ink-2); font-size:14.5px; max-width:64ch}
+.verdict .one{margin-top:14px; padding-top:14px; border-top:1px solid var(--rule-2);
+  font-family:"Noto Serif SC",serif; font-size:16px; font-style:italic; color:var(--ink)}
+
+section{margin-top:56px}
+.sh{display:flex; align-items:baseline; gap:13px; border-bottom:1px solid var(--rule-2);
+  padding-bottom:10px; margin-bottom:18px}
+.sh .n{font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; color:var(--steel); flex:none}
+.sh h2{font-size:21px; font-weight:700}
+.lede{color:var(--ink-2); font-size:14.5px; max-width:64ch; margin:0 0 20px}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse; width:100%; font-size:13.5px}
+th{background:var(--sunk); text-align:left; font-weight:700; font-size:11.5px;
+  letter-spacing:.06em; padding:10px 13px; border:1px solid var(--rule)}
+td{padding:11px 13px; border:1px solid var(--rule); vertical-align:top; color:var(--ink-2)}
+td b{color:var(--ink)}
+
+/* kill list */
+.kills{display:grid; gap:10px}
+.kill{display:grid; grid-template-columns:auto 1fr; gap:14px; border:1px solid var(--kill);
+  background:var(--kill-soft); padding:13px 16px; align-items:start}
+.kill .ic{font-family:"JetBrains Mono",monospace; font-weight:700; color:var(--kill); font-size:12px; line-height:1.9}
+.kill b{display:block; color:var(--ink); margin-bottom:2px}
+.kill span{font-size:13px; color:var(--ink-2)}
+
+/* two col */
+.two{display:grid; grid-template-columns:1fr 1fr; gap:22px}
+@media(max-width:720px){.two{grid-template-columns:1fr}}
+.box{border:1px solid var(--rule-2); background:var(--panel); padding:18px 20px}
+.box.red{border-top:4px solid var(--kill)}
+.box.green{border-top:4px solid var(--gap)}
+.box h3{font-size:16px; margin-bottom:4px}
+.box .sub{font-size:12px; color:var(--ink-3); margin-bottom:13px; font-family:"JetBrains Mono",monospace;
+  letter-spacing:.08em; text-transform:uppercase}
+.box ul{margin:0; padding-left:17px; font-size:13.5px; color:var(--ink-2)}
+.box li{margin-bottom:8px}
+.box li b{color:var(--ink)}
+
+/* directions */
+.dirs{display:grid; gap:16px}
+.dir{border:1px solid var(--rule-2); background:var(--panel); padding:0; overflow:hidden}
+.dir .top{padding:16px 20px; border-left:5px solid var(--c); background:var(--cs)}
+.dir .tier{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--c); font-weight:700}
+.dir h3{font-size:18px; margin:6px 0 4px}
+.dir .one{font-size:13.5px; color:var(--ink-2)}
+.dir .body{padding:16px 20px 18px}
+.dir .row{display:grid; grid-template-columns:92px 1fr; gap:14px; padding:8px 0;
+  border-bottom:1px solid var(--rule); font-size:13.5px}
+.dir .row:last-child{border-bottom:none}
+.dir .row dt{color:var(--ink-3); font-size:12.5px}
+.dir .row dd{margin:0; color:var(--ink-2)}
+.pick{display:inline-block; font-family:"JetBrains Mono",monospace; font-size:10.5px;
+  letter-spacing:.1em; padding:2px 8px; background:var(--gap); color:var(--paper); font-weight:700; margin-left:8px}
+
+/* timeline demo */
+.shots{display:grid; gap:0; border-top:1px solid var(--rule)}
+.shot{display:grid; grid-template-columns:96px 1fr; gap:18px; padding:14px 0; border-bottom:1px solid var(--rule)}
+.shot .t{font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:700; color:var(--steel); white-space:nowrap}
+.shot .h{font-weight:500; margin-bottom:3px}
+.shot .d{font-size:13.5px; color:var(--ink-2)}
+.shot.peak{background:var(--warn-soft); margin:0 -14px; padding-left:14px; padding-right:14px}
+.shot.peak .t{color:var(--warn)}
+.quote{font-family:"Noto Serif SC",serif; font-style:italic; color:var(--ink);
+  border-left:3px solid var(--rule-2); padding-left:13px; margin:8px 0 0; font-size:14px}
+
+/* qa */
+.qa{display:grid; gap:12px}
+.qi{border:1px solid var(--rule-2); background:var(--panel); padding:15px 18px}
+.qi .q{font-weight:700; font-family:"Noto Serif SC",serif; font-size:15px; margin-bottom:8px}
+.qi .q span{color:var(--steel); font-family:"JetBrains Mono",monospace; font-size:12px; margin-right:8px}
+.qi .a{font-size:13.5px; color:var(--ink-2)}
+.qi .note{margin-top:9px; padding-top:9px; border-top:1px dashed var(--rule-2);
+  font-size:12.5px; color:var(--ink-3)}
+
+.weeks{display:grid; gap:14px}
+.wk{border-left:3px solid var(--steel); padding:2px 0 2px 16px}
+.wk .w{font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--steel); font-weight:700; letter-spacing:.1em}
+.wk h3{font-size:16px; margin:5px 0 7px}
+.wk ul{margin:0; padding-left:17px; font-size:13.5px; color:var(--ink-2)}
+.wk li{margin-bottom:6px}
+.wk li b{color:var(--ink)}
+.wk.hot{border-color:var(--kill)}
+.wk.hot .w{color:var(--kill)}
+
+.flag{border:1px solid var(--warn); background:var(--warn-soft); padding:14px 17px; font-size:13.5px; margin-top:18px}
+.flag b{color:var(--warn)}
+.note-src{font-size:12px; color:var(--ink-3); margin-top:10px}
+code{font-family:"JetBrains Mono",monospace; font-size:12.5px; background:var(--sunk); padding:1px 5px}
+footer{margin-top:62px; padding-top:20px; border-top:1px solid var(--rule); font-size:12px; color:var(--ink-3)}
+footer a{color:var(--steel)}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kick">Anker 黑客松 · 智能录音赛道 · PRX</div>
+  <h1>别做纪要，去听机器</h1>
+  <p>9 个 agent 的并行调研与事实核查结果。67 条结论保留、1 条编造剔除。核心价值不在方案建议，在下面那批能直接判定一个想法死活的物理约束。</p>
+  <div class="prov">
+    <span><b>调研</b> 2026-09-09</span>
+    <span><b>核查</b> 逐条独立复核，FALSE 者剔除</span>
+    <span><b>赛制信息</b> 取自官方细则原文</span>
+  </div>
+</header>
+
+<div class="verdict">
+  <div class="lab">结论</div>
+  <h2>推荐方向二《听诊器》</h2>
+  <p>把这颗为人声调音的录音豆磁吸到设备外壳上，让它学会一台机器「健康时的声音」，异响出现时断电、报警、开工单。所有在位者都在做「听人说话」——非语音声学事件是这个品类的真空地带。</p>
+  <div class="one">这场比赛的胜负手不在模型有多好，在评委席上有没有一样东西真的动了、亮了、停了。</div>
+</div>
+
+<section style="margin-top:34px">
+  <div class="sh"><span class="n">00</span><h2>9/9 命题解析夜带来的四条修正</h2></div>
+  <p class="lede">直播 20:00–22:00，WaytoAGI 承办，653 人参会。以下取自飞书智能纪要全文。<b>纪要由 AI 生成，标注「存疑」的两条必须向主办方核实。</b></p>
+  <div class="kills">
+    <div class="kill" style="border-color:var(--gap); background:var(--gap-soft)"><span class="ic" style="color:var(--gap)">✓</span><div><b>官方划了一条红线，而听诊器天然在线外</b><span>命题核心要求原文：<b>「所有场景必须确保被录人知情，禁止偷录、窃听类违规场景」</b>。做「听人说话」的队伍全部要处理知情同意——持续监听情绪、录销售对话尤其棘手。<b>听机器不涉及任何人的隐私，这从合规约束变成了你的护城河，路演里值得主动点出来。</b></span></div></div>
+    <div class="kill" style="border-color:var(--gap); background:var(--gap-soft)"><span class="ic" style="color:var(--gap)">✓</span><div><b>官方亲口否定了做纪要</b><span>评分导向原文：<b>「优先考察场景与硬件的结合度、场景价值，可探索将音频作为 AI agent 输入实现任务闭环，而非仅转为静态文档」</b>。「而非仅转为静态文档」是主办方自己说的——红海判断不再是推测。</span></div></div>
+    <div class="kill" style="border-color:var(--warn); background:var(--warn-soft)"><span class="ic" style="color:var(--warn)">⚠</span><div><b>SDK 可能支持「边录边传」<span style="font-family:'JetBrains Mono',monospace;font-size:10px">存疑</span></b><span>纪要原文：录音豆「开放 iOS 与安卓端 SDK，<b>支持离线与边录边传模式</b>」。这与公开 SDK 仓库里「无实时音频流」的能力清单矛盾。若边录边传属实，分段拉取的 5–15 秒延迟约束就不成立了，路演可以承诺更快的响应。<b>第二场直播或拿到 SDK 后第一件事就是确认这条。</b></span></div></div>
+    <div class="kill" style="border-color:var(--kill)"><span class="ic">⚠</span><div><b>路演时长可能被砍半<span style="font-family:'JetBrains Mono',monospace;font-size:10px">存疑</span></b><span>纪要写<b>「3 分钟演示 + 2 分钟问答」</b>，而官方《赛事细则》文档白纸黑字是「6 分钟演示 + 3 分钟问答，严格计时」。两者冲突。若真是 3+2，下面第 04 节的分镜要整体压缩一半，<b>「制造故障」那 60 秒必须保住，其余全砍</b>。这条务必在群里问清楚。</span></div></div>
+  </div>
+  <div class="flag" style="border-color:var(--steel); background:var(--steel-soft)"><b>入围队伍的配套资源（此前未知）：</b>AWS 全量云资源、AI 编程工具、大模型调用额度，以及对应赛道的硬件 SDK 与开发环境指南。<b>另外官方承诺：所有赛事资料、直播回放、赛道老师分享材料都会同步到选手中心</b>——包括一份含 API/SDK 接入信息、评分标准、设计案例的 PPT（纪要待办项，讲师 Terry Lee）。那份 PPT 是目前最值得等的东西。</div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">01</span><h2>先看硬约束</h2></div>
+  <p class="lede">这批事实来自官方产品页、52audio 拆解、官方 SDK 仓库和社区逆向文档。每一条都能直接杀死一类想法——在动笔写方案之前先过一遍，比任何创意都省时间。</p>
+  <div class="kills">
+    <div class="kill"><span class="ic">01</span><div><b>一次只接受一个 BLE 连接</b><span>官方 App 连着的时候你的 App 连不上，反之亦然。<b>「我的 App 做联动、官方 App 做转写」这类方案当场出局。</b>（注意这是设备端限制，手机同时连打印机、ESP32 没问题。）</span></div></div>
+    <div class="kill"><span class="ic">02</span><div><b>官方 SDK 没有实时音频流，也没有重点标记事件</b><span>公开能力清单只有六组：扫描连接 / 录音与文件传输 / 设备控制 / 绑定 / OTA / 设备日志。想做实时响应，只能设计成「短周期启停录音 → 分段拉取」，一轮约 5–15 秒。<b>路演别承诺秒级，说「10 秒内」你做得到且没人挑剔。</b></span></div></div>
+    <div class="kill"><span class="ic">03</span><div><b>「重点标记」是最大未知项</b><span>产品页确认双击标记存在（带震动反馈），但社区逆向文档和官方 SDK README 两个独立来源都不含 mark 事件。它是实时回调、还是写进文件元数据、还是走云侧——完全未知。<b>任何方案都要为两种情况各准备一条路径。</b></span></div></div>
+    <div class="kill"><span class="ic">04</span><div><b>只有 2 颗 MEMS 麦克风，5 米拾音</b><span>声源定位、方向判断、左右分离——硬件上做不到，别写进方案。</span></div></div>
+    <div class="kill"><span class="ic">05</span><div><b>不支持 USB 导出音频</b><span>所有音频只能走 BLE / SPP / Wi-Fi SoftAP 三条协议通道。而且 SoftAP 快传期间手机会切到设备热点、断开互联网——<b>演示流程里绝不能出现「快传的同时调云端 LLM」</b>，这个切换一定卡住。</span></div></div>
+    <div class="kill"><span class="ic">06</span><div><b>本体 90mAh 电池，10g / 直径 23.2mm / IPX4 / 8 小时</b><span>别想从豆子取电驱动外设。另外：48g、60×60×14.95mm 是<b>充电盒</b>的参数，引用错了现场会被拆穿。</span></div></div>
+    <div class="kill"><span class="ic">07</span><div><b>iOS 没有 Web Bluetooth</b><span>网页方案在 iPhone 上必死。官方 SDK 同时提供 iOS Framework 和 Android AAR，<b>建议主攻 Android 原生</b>。</span></div></div>
+    <div class="kill"><span class="ic">08</span><div><b>转写全部走云端，免费额度 300 分钟/月</b><span>这既是约束也是弹药——爱搞机实测批评它「所有录音强制触发转写、误操作也吃额度、用户无法手动控制」。用官方产品自己的痛点论证你的稀疏触发架构，是最有说服力的创新论证。</span></div></div>
+  </div>
+  <div class="flag"><b>官方 SDK 是公开的：</b><code>github.com/AnkerInnovations/SoundcoreSDKDemo</code>（iOS + Android To-B Demo，含 SDK 二进制）。初始化参数是 <code>SDKInitConfig</code>：context / userId / deviceId / token / licenseJson / license_signature / environment / commandTimeOut / fileTransferInterval。<b>license_signature 由服务端签发，改 licenseJson 会使签名失效，必须向主办方申请授权。</b>在预赛文档里写出这一段，是绝大多数队伍写不出来的硬证据。</div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">02</span><h2>红海与真空</h2></div>
+  <div class="two">
+    <div class="box red">
+      <h3>已经是红海</h3>
+      <div class="sub">做了等于送分</div>
+      <ul>
+        <li><b>会议纪要 / 转写 / 摘要 / 待办</b>——Plaud 出货 200 万台以上、软件 ARR 破 1 亿美元、约 50% 硬件买家转付费，且未拿风投已盈利。你在 24 小时内做不出比它更好的纪要，评委也知道。</li>
+        <li><b>你手上这颗豆子的官方 App 就是这条路。</b>安克 × 飞书「AI 录音豆」899 元，2026-01 上市，飞书提供声纹识别、实时转写翻译、AI 纪要。做会议场景 = 在飞书主场跟飞书比，且拿不到它的后端。</li>
+        <li>同年钉钉 A1（499/799 元，72 语种）、讯飞 WAIC 2025 一次发 5 款录音笔。两大办公生态 + 全价位在位者已占死。</li>
+        <li>底部还有华强北白牌 AI 录音卡 120–150 元。「卡片形态 + 多语言转写 + 摘要」已经是 120 块钱的东西。</li>
+        <li><b>宠物声音翻译</b>——Traini、Mibuddy、PettiChat 已拥挤，且准确率宣称被第三方指出无法验证，而决赛明写要求「可验证」。<b>这个方向会输。</b></li>
+      </ul>
+    </div>
+    <div class="box green">
+      <h3>真空地带</h3>
+      <div class="sub">评委在等的东西</div>
+      <ul>
+        <li><b>非语音声学事件。</b>所有在位者都在做「听人说话」。机器异响、呼吸咳嗽、水流、撞击、动物声——没有任何一家消费级录音设备在做。</li>
+        <li><b>执行层。</b>行业最大未解问题不是「录不准」，是「录完没人看」。赛题原文「不止于转写，而能进一步完成理解、联动、反馈与流程推进」就是照着这个痛点写的。</li>
+        <li><b>用外部信号锚定说话人身份。</b>说话人分离在会议场景 DER 普遍 10–20%（pyannote 3.1 在 AMI 约 19%），纯算法解不掉。用「谁按了按钮 / 设备贴在哪 / 工单里是谁」锚定，正是赛题「连接环境信息」的字面要求。</li>
+        <li><b>稀疏触发架构。</b>只把 1% 有价值的片段升级为云端理解——一句话同时回答成本、隐私、续航，以及「为什么不是只做个更好的纪要」。</li>
+        <li><b>把设备赶出办公室。</b>赛题举的三个例子（床边、工作台、宠物项圈）全是家庭与现场，而 soundcore Work 的官方定位是会议访谈商务。主办方在用举例明说：带它去它不该去的地方。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note-src">另有五类做法已被公开验证失败，不要重复：独立 always-on 录音吊坠当生意（Limitless 累计仅 2 万台后卖身 Meta、Humane AI Pin 集体变砖、Friend 死于「挂胸前根本听不清」）；让 AI 总结非结构化漫谈（HowToGeek 实测指出对漫谈摘要没什么用）；全程录音全程转写；纯云端依赖（搜狗全线硬件停服变砖，是中国用户对云端 AI 录音硬件最深的不信任）；订阅制（Bee 被亚马逊收购后直接取消月费）。</div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">03</span><h2>同场对手</h2></div>
+  <p class="lede">组队大厅 10 支活跃队伍，2026-09-10 快照。每赛道各评冠亚季军，所以<b>直接竞争只在智能录音那 4 支之间</b>；金点子奖是全场投票，才构成跨赛道压力。</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th style="width:96px">赛道</th><th style="width:150px">队伍</th><th style="width:58px">人数</th><th>方向</th></tr></thead>
+    <tbody>
+      <tr style="background:var(--steel-soft)"><td rowspan="4"><b>智能录音</b><br><span style="font-size:11px;color:var(--ink-3)">你的赛道</span></td><td><b>千帆共创</b> T-035</td><td class="mono">2/4</td><td>保险业 agent，已有保险业专家，缺硬件。<b>方向最明确的一支。</b></td></tr>
+      <tr style="background:var(--steel-soft)"><td><b>待定</b> T-043</td><td class="mono">1/4</td><td>双相情感障碍可穿戴，语音捕捉情绪信号预判躁狂/抑郁。自述大厂产品背景，找端侧算法合伙人。</td></tr>
+      <tr style="background:var(--steel-soft)"><td><b>X</b> T-045</td><td class="mono">1/4</td><td>方向未定。招「文科生，感性大于理性，做产品故事架构」。</td></tr>
+      <tr style="background:var(--steel-soft)"><td><b>IRIS</b> T-047</td><td class="mono">1/4</td><td>Intelligent Research and Index System。仍在组队 + idea 打磨阶段，技术方案与产品形态都没定。</td></tr>
+      <tr><td rowspan="3">智能安防</td><td><b>待定</b> T-036</td><td class="mono">1/4</td><td>「主人不在家时，怎么让养猫更安心」。全场自述履历最强的人，见下。</td></tr>
+      <tr><td><b>魔法科技</b> T-042</td><td class="mono">3/4</td><td>已满员。招募描述仅「熟悉嵌入式技术」。</td></tr>
+      <tr><td><b>映照</b> T-046</td><td class="mono">2/4</td><td>主题「看见彼此」。</td></tr>
+      <tr><td rowspan="2">充电储能</td><td><b>超环电泵队</b> T-037</td><td class="mono">4/4</td><td>已满员，全场唯一满编队伍。</td></tr>
+      <tr><td><b>喜欢拿*砸键盘</b> T-040</td><td class="mono">1/4</td><td>需求描述原文：「我不到啊」。</td></tr>
+      <tr><td>智能服务</td><td><b>哈吉米</b> T-044</td><td class="mono">2/4</td><td>NFC + AI + 移动电源 + 低功耗传感器，解决「人与 AI 的最后 1cm」。</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="flag" style="border-color:var(--gap); background:var(--gap-soft); margin-top:20px"><b>最重要的一条判断：智能录音这 4 支，没有一支的方案是锁死的。</b>千帆共创方向明确但缺硬件人；T-043 的情绪识别撞可验证性的墙；X 和 IRIS 连方向都没定。<b>这条赛道现在还是空的，先把方案钉死的人占优。</b>而且四支全在做「听人说话」，全部要处理主办方那条「被录人知情」的红线。</div>
+
+  <h3 style="font-size:15px;margin:32px 0 6px">两份高履历自述的可验证性</h3>
+  <p style="font-size:13.5px;color:var(--ink-2);margin:0 0 16px;max-width:64ch">这两人的战绩此前被当作既定事实写进判断，经公开网页交叉核查后应当降级。<b>黑客松获奖项目不被媒体点名是常态，对不上不等于虚假——但也不该当作已验证的事实来做决策。</b></p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th style="width:230px">自述</th><th>公开网页能核到什么</th><th style="width:88px">判定</th></tr></thead>
+    <tbody>
+      <tr><td colspan="3" style="background:var(--sunk)"><b>选手 A</b>（群内发帖）—— ，尚未进组队大厅，方向不限。<b>录音赛道最大的变量</b></td></tr>
+      <tr><td>前安克 er，水手计划 &amp; 火种计划 GTM</td><td>安克确有「火种计划」内部选拔外派海外 GTM，公开稿件未点名</td><td><b>机制属实<br>个人未证</b></td></tr>
+      <tr><td>南客松 S1 &amp; S2 Agent-network 金奖，项目 Token bank</td><td>南客松真实存在（南京，2025 鼓楼 / 2026 建邺）。公开报道的金奖项目里<b>没有 Token bank</b>。另有独立站 tokenbank.dev 做 AI token 额度市场，语义接近但无法钉死同一作品</td><td><b>对不上</b></td></tr>
+      <tr><td>AdventureX 25 &amp; 26，Fiona 人脸机器人，地瓜三等奖 + 小红书三等奖 + 主赛道第四</td><td>AdventureX 真实存在，公开 gallery 里确有用地瓜机器人做人脸追踪的作品，但名字是 <b>Mechanical Heart / smartbot，不是 Fiona</b></td><td><b>对不上</b></td></tr>
+      <tr><td>OKX 黑客松最高现实世界采用奖，项目 Murmray</td><td>OKX 确实办过多次黑客松，公开获奖名单里<b>没有 Murmray</b></td><td><b>对不上</b></td></tr>
+      <tr><td>公众号《肖恩的部落格》，写安克财报分析</td><td>检索不到能唯一对应的已验证公号主页</td><td><b>未证</b></td></tr>
+      <tr style="background:var(--warn-soft)"><td><b>逆向过飞书录音豆、钉钉 A1、Plaud 协议</b></td><td>这三款设备均为 2025–2026 公开在售，被社区逆向不稀奇。但细节只存在于他的自述</td><td><b>未证<br>但影响最大</b></td></tr>
+      <tr><td colspan="3" style="background:var(--sunk)"><b>选手 B</b> —— T-036 智能安防，不在你的直接赛道</td></tr>
+      <tr><td>巴黎 iGEM 国际金奖</td><td>iGEM 总决赛确在巴黎，深圳多校近年有金银奖，公开名单<b>未出现该姓名</b></td><td><b>对不上</b></td></tr>
+      <tr><td>2026.8 香港 Physical AI Hackathon 队长，赛道 Top 2，「遗族情绪安抚 AI 硬件」</td><td>该赛事 2026 年 8 月首届真实举办（48 小时、具身方向）。公开报道写了化妆机械臂等获奖项目，<b>未点名该作品或姓名</b></td><td><b>赛事属实<br>项目未证</b></td></tr>
+      <tr><td>深圳科创学院创业者 / 奇绩 S26</td><td>两个机构都真实且确在孵化 AI+硬件方向，但学员名单均不公开点名</td><td><b>无法核实</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note-src">其余队伍（千帆共创、魔法科技、映照、超环电泵队、哈吉米）的成员姓名在公开网页上均无法唯一对应到创业或黑客松报道；多数队长使用飞书匿名号（匿名号、匿名号、飞书用户4935GR），本身就没有可检索的公开足迹。<b>本节只整理参赛者自己贴在公开组队大厅与官方群内的招募信息，以及能在公开网页交叉到的部分，不涉及私人联系方式与未公开账号。</b></div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">04</span><h2>三个方向</h2></div>
+  <p class="lede">自查阈值：<b>把录音豆换成手机自带麦克风，你的 demo 还成立吗？</b>成立 = 硬件不可替代性为零，「技术实现」维直接塌。</p>
+  <div class="dirs">
+
+    <div class="dir">
+      <div class="top" style="--c:var(--warn); --cs:var(--warn-soft)">
+        <div class="tier">方向一 · 稳妥 · 保底</div>
+        <h3>口述即工单</h3>
+        <div class="one">师傅双手插在机器里，嘴上说的每句话自动填进结构化工单，双击一次推进一道工序，收工时打印机吐出一张纸质工单。</div>
+      </div>
+      <div class="body">
+        <div class="row"><dt>关键设计</dt><dd>槽位化理解，不做自由摘要。预置工单模板，LLM 只判断「这段话填进哪个槽位」——这是绕开「非结构化对话摘要没用」的唯一办法：给 LLM 结构约束。</dd></div>
+        <div class="row"><dt>24h 能演示</dt><dd>碰 NFC 认机器 → 说三句话 → 双击三次 → 工单逐格填满 → 热敏打印机吐纸 → 撕下来交给评委。</dd></div>
+        <div class="row"><dt>最大风险</dt><dd><b>创新性偏低。</b>语音填单讯飞和各家 CRM 都有。靠「双击当状态机推进键」撑创新分，撑不满。</dd></div>
+      </div>
+    </div>
+
+    <div class="dir">
+      <div class="top" style="--c:var(--gap); --cs:var(--gap-soft)">
+        <div class="tier">方向二 · 进攻<span class="pick">推荐</span></div>
+        <h3>听诊器</h3>
+        <div class="one">让录音豆去听机器，不听人。30 秒学会一台机器健康时的声音，异响出现时立刻断电报警——设备不再录音，它在诊断。</div>
+      </div>
+      <div class="body">
+        <div class="row"><dt>关键设计</dt><dd><b>30 秒示教，不训练模型。</b>录 30 秒正常声建立频谱基线（梅尔谱模板），实时比对马氏距离超阈值即触发。评委当场可以让你换一台没见过的机器现学现用——这是最强的可验证性演示。</dd></div>
+        <div class="row"><dt>标记反转</dt><dd>双击不是打书签，是<b>在线学习的标注按钮</b>。误报时双击标为「正常，学进去」；漏报时双击标为「这就是异常」。SDK 能力的非默认用法。</dd></div>
+        <div class="row"><dt>执行层</dt><dd>异响 → 智能插座断电（涂鸦/米家云 API，零硬件）+ 灯条变红 + 推送给不在现场的班组长。</dd></div>
+        <div class="row"><dt>24h 能演示</dt><dd>30 秒学习 → 往扇叶里塞卡纸 → 3 秒内灯变红 + 插座「啪」一声断电 + 手机弹窗。<b>那声「啪」是整场路演最贵的 0.5 秒。</b></dd></div>
+        <div class="row"><dt>战略加分</dt><dd>阳萌公开主张「大模型应部署在用户设备上而不是云端」，Anker Day 2026 发布 Thus™ A1 存算一体音频芯片。你的主链路端侧、可开飞行模式跑，一句话正中公司战略。</dd></div>
+        <div class="row"><dt>生死线</dt><dd><b>必须在 9 月实测：</b>拿到的是 Opus 有损压缩音频，且设备为人声做的降噪/AGC 可能吃掉机器的稳态频谱。录一段风扇声拉出来看频谱是否还可分。若被破坏严重，退路是改用瞬态事件（撞击、摩擦、尖啸）——瞬态特征抗压缩得多。</dd></div>
+      </div>
+    </div>
+
+    <div class="dir">
+      <div class="top" style="--c:var(--kill); --cs:var(--kill-soft)">
+        <div class="tier">方向三 · 高风险 · 不建议做主线</div>
+        <h3>离线的耳朵</h3>
+        <div class="one">绕开官方云管线，直接逆向拉实时音频流，端侧跑完整理解，全程飞行模式。</div>
+      </div>
+      <div class="body">
+        <div class="row"><dt>技术依据</dt><dd>社区逆向文档记录 <code>0x1A / 0x07</code> payload 第 9 字节 <code>realtimeFlag == 1</code> 即实时流，已有四个独立第三方实现跑通。</dd></div>
+        <div class="row"><dt>为什么会输</dt><dd><b>协议支持 ≠ SDK 透出。</b>决赛你手上是主办方发的带 license 的 SDK，绕过它用逆向协议，评审席上坐着安克工程师——这是政治问题不只是技术问题。</dd></div>
+        <div class="row"><dt>许可证陷阱</dt><dd>tacshi 无 license（保留全部权利，只能读不能抄）；andrewseago 是 GPL-3.0、mic-rs 是 AGPL-3.0（传染性）；<b>只有 该选手-TKD/recording-bean-web 是 MIT 可用</b>，但它是 Web Bluetooth，iPhone 上跑不了。</dd></div>
+        <div class="row"><dt>正确用法</dt><dd>降级成方向二里的一段话 + 30 秒飞行模式演示，用最低成本吃掉这个方向 80% 的战略分。</dd></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flag"><b>为什么推荐方向二：</b>获奖姿势高度一致——TreeHacks 2026 总冠军 Shepherd 是一根 40–60 美元的电动化盲杖；AdventureX 2025 硬件赛道第一 Echozen 是「脑电 → AI → 机械臂推水杯」；深圳女性硬件黑客松最高奖是一副经痛疗愈耳机。<b>改造一个已有器物 + 打中一个被忽视的场景 + 一个当场看得见的物理动作</b>，方向二三条全中。而且「为什么必须是这颗豆子」有唯一答案（10g / 23.2mm / 磁吸 / IPX4，能贴到手机贴不上去的地方），方向一没有。</div>
+
+  <div class="flag" style="border-color:var(--steel); background:var(--steel-soft)"><b>如果队里没有硬件人：</b>方向二完全可以零焊接完成。执行器用涂鸦/米家智能插座（云 API 直调）+ 台灯，视觉效果和继电器一样；第二数据源用手机 IMU 绑在机器上当振动传感器；结构件用磁吸片 + 3M 胶 + 亚克力托架，30 分钟搞定。<b>不要做任何需要打板、注塑、新电池管理的东西</b>——Humane 就死于发热和电池这类物理问题。</div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">05</span><h2>路演分镜</h2></div>
+  <p class="lede">原则是 Demo-Driven Development：先把时间逐秒写死，再倒推实现，脚本外的功能一律不做。Cal Hacks 12.0 冠军为了演示稳定，直接砍掉 agent 的点击能力只留键盘。你也要准备好砍。</p>
+  <div class="flag" style="margin-bottom:20px"><b>⚠ 时长待确认：</b>下面按《赛事细则》的 <b>6 分钟演示 + 3 分钟问答</b>排。但 9/9 直播纪要说的是 <b>3 分钟 + 2 分钟</b>。若确认是 3+2，压缩方案是：0:00–0:20 开场一句话 → 0:20–0:50 磁吸上机 + 30 秒示教 → <b>0:50–1:50 制造故障与断电（这 60 秒一秒不能少）</b> → 1:50–2:30 双击纠错 → 2:30–3:00 收口与已实现/未实现清单。闭环与规模那一段整段砍掉，放进问答里答。</div>
+  <div class="shots">
+    <div class="shot"><div class="t">0:00–0:30</div><div><div class="h">不讲技术，讲一个人</div><div class="d">桌上摆一台正在转的机器，从第一秒就在响。不要团队介绍页，不要架构图。<div class="quote">这是一台空压机。它坏之前会先响三天。这三天没有人在听。</div></div></div></div>
+    <div class="shot"><div class="t">0:30–1:30</div><div><div class="h">说清为什么这颗豆子必须在场</div><div class="d">一句话点掉红海（纪要飞书钉钉做完了，我们没做转写）→ 把 10g 的豆子从手心拿出来「啪」一下磁吸到机器外壳上。<b>这个动作本身就是「设备改造」的最好证明，比任何一页 PPT 都强。</b></div></div></div>
+    <div class="shot"><div class="t">1:30–2:30</div><div><div class="h">现场示教 · 第一个真实动作</div><div class="d">点「学习」→ 30 秒倒计时 → 屏幕出现这台机器的声纹基线。<b>这里开飞行模式</b>，图标全程留在画面里。<div class="quote">它现在认识这台机器了。没有联网、没有训练、没有标注。</div></div></div></div>
+    <div class="shot peak"><div class="t">2:30–3:30</div><div><div class="h">制造故障 · 全场最关键的 60 秒</div><div class="d">往扇叶里塞卡纸 → 手机振动 + 灯条变红 + <b>智能插座「啪」一声断电，机器停转</b> → 屏幕出现异常时刻的频谱切片和一条工单。<b>留 3 秒静默让评委听见机器停下来的安静。不要在这 3 秒里说话。</b></div></div></div>
+    <div class="shot"><div class="t">3:30–4:15</div><div><div class="h">标记反转 · 第二个真实动作</div><div class="d">让评委拍桌子制造一次误报 → 你双击豆子（震动确认）→ 这条被标为「正常，学进去」→ 再拍一次，不再报警。<b>作用是证明你不是在演一个写死的脚本——评委最想验证的就是这个。</b></div></div></div>
+    <div class="shot"><div class="t">4:15–5:15</div><div><div class="h">闭环与规模</div><div class="d">真的推一条通知，让评委看见另一台手机亮起来。讲成本：30 秒示教 = 一台新设备上线，一个班组 8 台机器一颗豆子轮巡。战略话术不超过 15 秒。</div></div></div>
+    <div class="shot"><div class="t">5:15–6:00</div><div><div class="h">收口</div><div class="d">回到第一句话：「这三天，现在有人在听了。」最后一屏放<b>已实现 / 未实现两栏清单</b>，主动列出没做的东西。这一屏在「完成度」和诚信上的收益远大于多吹一个功能。</div></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">06</span><h2>3 分钟问答：五个必被问的</h2></div>
+  <div class="qa">
+    <div class="qi"><div class="q"><span>Q1</span>为什么不用手机麦克风就行了？</div><div class="a">三点。① 位置：手机不能磁吸在电机侧面、管道背面、床帘后面，豆子 10g、23.2mm、IPX4 可以。② 手机得干别的：跑分析、推送、接插座。③ 一个班组一颗豆子轮巡 8 台设备，成本结构和「每台设备装一部手机」不是一回事。</div><div class="note">这题答不好，整个方案的硬件必要性归零。背熟。</div></div>
+    <div class="qi"><div class="q"><span>Q2</span>你用了哪些 SDK 能力？</div><div class="a">扫描连接、设备绑定、录音启停、离线文件列表与 Wi-Fi 快传、电量与充电状态推送、重点标记。其中重点标记当在线标注按钮用；状态信息拿来做「设备是否还在岗」的看门狗。</div><div class="note">能答出多条且每条都有非默认用法，「技术实现」维直接拉开身位。如果实测下来标记拿不到实时回调，改口径为「写入文件元数据，传输后回读」——两套话都要练。</div></div>
+    <div class="qi"><div class="q"><span>Q3</span>误报率多少？会不会一直响？</div><div class="a">不给百分比。给机制：阈值 + 迟滞 + 冷却窗口三个旋钮，加上双击一秒纠正。产品化的验证方法是 A/B 双机对照跑两周。</div><div class="note"><b>永远不要编准确率数字。</b>这个品类已经因为不可验证的准确率宣称被公开批评过。说「我不知道，但我有纠错机制」比说 95% 得分高。</div></div>
+    <div class="qi" style="border-color:var(--gap)"><div class="q"><span>Q4</span>隐私？它一直在听。</div><div class="a"><b>这题是你的送分题，别只做防守。</b>① 我们不录人——听的是机器，主办方划的「必须被录人知情、禁止偷录窃听」这条红线，我们在架构上就不可能触碰。② 主链路端侧，飞行模式下跑通，刚才你们看见了。③ 只有触发后的 10 秒片段会离开本机，且用户可关。④ 不拿任何音频训练模型。</div><div class="note">9/9 命题解析夜把「被录人知情」列为命题核心要求。同赛道另外三支队伍做的都是「听人说话」（销售对话、情绪监测、知识索引），这条对他们是成本，对你是优势——<b>主动说出来，别等评委问</b>。<br>还可以补一句判例：2026 年 8 月加州北区法院在 Otter.ai 集体诉讼中部分驳回了 Otter 的动议，认定原告已合理主张其属「第三方窃听者」，理由正是保留对话用于训练自有模型。</div></div>
+    <div class="qi"><div class="q"><span>Q5</span>这跟一个 200 块的工业振动传感器有什么区别？</div><div class="a">振动传感器要贴在轴承座上、要接线、要标定，一台机器一个。声音是唯一能隔空、免接触、一对多采集的信号，人耳几十年来就是这么判断的。我们做的是把师傅的耳朵复制一份，不是加一个仪表。</div><div class="note">这题会被工程背景的评委问。必须有答案。</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">07</span><h2>24 小时排期骨架</h2></div>
+  <p class="lede">真实可写代码时间约 14–16 小时（扣睡眠、吃饭、联调、录视频、彩排）。角色：A 队长（架构+后端+Agent 编排）｜B 移动端（Android+SDK）｜C 算法信号｜D 硬件结构+路演。没有硬件人则 D 并入 A/B。</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th style="width:132px">时段</th><th>动作</th></tr></thead>
+    <tbody>
+      <tr><td class="mono"><b>14:00–15:00</b></td><td><b>冻结。</b>全员白板画死数据流图 + 逐秒写死 6 分钟脚本，脚本外功能全部划掉。定 3 个接口契约。</td></tr>
+      <tr><td class="mono">15:00–17:00</td><td>A 后端骨架（单文件 FastAPI：<code>/ingest</code> 收片段 → 返回 status/score/action）｜B SDK 初始化+扫描+绑定+录音跑通真机｜C 离线跑通特征提取（读 wav → 梅尔谱 → 模板距离，先不接设备）｜D 结构件做完 + 麦克风距离实测</td></tr>
+      <tr style="background:var(--kill-soft)"><td class="mono"><b>17:00 关口一</b></td><td><b>B 是否已能从设备拉到一个音频文件？</b>拉不到 → 立即启用手机麦克风兜底，此后不再回头修 SDK。</td></tr>
+      <tr><td class="mono">18:00–20:00</td><td>A 分段拉取调度器｜B 文件传输（SoftAP 优先，蓝牙兜底）+ 解码 PCM｜C 用真设备录音标定阈值/迟滞/冷却，留可视化调参｜D UI 主页面（学习中/正常/异常三态，只做一页）</td></tr>
+      <tr style="background:var(--steel-soft)"><td class="mono"><b>21:00–23:00</b></td><td><b>端到端第一次贯通。</b>说话 → 拉文件 → 打分 → 触发插座。这是今晚唯一目标，其它都可以砍。</td></tr>
+      <tr style="background:var(--kill-soft)"><td class="mono"><b>23:00 关口二</b></td><td>贯通了 → 进打磨；没贯通 → 砍 SoftAP 只用蓝牙、砍重点标记、砍推送，留主干。</td></tr>
+      <tr><td class="mono">00:00–03:00</td><td>重点标记接入（两条路径都试，先成先用）｜在线学习：双击加进模板｜误报调优（开电视、开空调、多人说话实测）｜<b>录 demo 视频第一遍</b></td></tr>
+      <tr><td class="mono">03:00–07:00</td><td>轮流睡 4 小时，两两轮换，任何时刻至少 2 人醒着。</td></tr>
+      <tr><td class="mono">07:00–09:00</td><td>云端 LLM 生成工单文案（<b>可选，做不完就砍</b>）｜UI 收尾 + 飞行模式路径验证｜参数固化为一套「演示参数」｜PPT 不超过 6 页 + 已实现/未实现清单</td></tr>
+      <tr style="background:var(--warn-soft)"><td class="mono"><b>09:00 冻结代码</b></td><td>此后只允许改文案和参数，<b>不允许改逻辑</b>。</td></tr>
+      <tr><td class="mono">10:00–13:00</td><td>彩排 5 遍，掐表。其中一遍故意断网、一遍故意让插座失败，练兜底话术。11:00 录 demo 视频第二遍。</td></tr>
+      <tr><td class="mono">13:00–14:00</td><td>问答对练（五个必答题各过两遍）+ 设备充电 + 物料摆位。</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="flag"><b>三层兜底：</b>网络断 → 主链路本就端侧，云端 LLM 文案改本地模板；SDK 连不上真机 → 一个开关切手机麦克风，下游管线不变；插座云 API 挂 → 灯条 + 手机全屏红 + 音效；整机翻车 → 提前录好的两遍 demo 视频本地播放。<b>两个关口的砍功能决定必须当场做，不许「再试半小时」。</b></div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">08</span><h2>预赛文档怎么写</h2></div>
+  <p class="lede">大多数队伍会写砸的是「落地可行性」，而这是最容易靠格式拿满分的一维。评委在没见到人、没见到 demo 的情况下，只能靠文档结构判断你会不会在决赛翻车。总长控制在 6–8 页。</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th style="width:132px">维度</th><th>怎么写</th></tr></thead>
+    <tbody>
+      <tr><td><b>选题明确度</b><br><span class="mono" style="font-size:11px;color:var(--ink-3)">1 页</span></td><td>开头一句话必须含三要素：<b>谁 + 在什么时刻 + 什么具体的坏结果</b>。紧跟一个可量化现状——<b>做 5 个真实用户访谈，比引用任何行业报告都值钱</b>，且能在决赛问答里当弹药。用一整段明确写「我们不做什么」：不做会议纪要、不做转写摘要、不做多语言翻译。主动划边界是选题明确度的最强信号。</td></tr>
+      <tr><td><b>方案清晰度</b><br><span class="mono" style="font-size:11px;color:var(--ink-3)">1.5 页</span></td><td>核心是<b>一张端到端数据流图</b>，每个框标清「在哪跑」（设备/手机端侧/云）。用赛题原文的动词做小标题逐条自证，让评委不用自己找。<b>写明每条链路走哪个 SDK 接口</b>——公开仓库的真实初始化参数和 license 签发机制，是绝大多数队伍写不出来的硬证据。</td></tr>
+      <tr><td><b>项目创新性</b><br><span class="mono" style="font-size:11px;color:var(--ink-3)">1 页</span></td><td>不要罗列功能，只讲三个反转讲透：① 让为人声设计的设备去听机器；② 把重点标记从书签反转为在线学习标注按钮；③ 稀疏触发，99% 的声音不上云——这一条同时回答成本、隐私、续航三个问题。</td></tr>
+      <tr style="background:var(--warn-soft)"><td><b>落地可行性</b><br><span class="mono" style="font-size:11px;color:var(--ink-3)">1.5 页 · 决定初筛</span></td><td>写砸的方式是整页讲「我们会做到 X、Y、Z」，一个时间数字都没有。必须有三样：<b>小时级排期表</b>（含联调窗口和彩排窗口）、<b>风险与应对表</b>（主动点名自己会踩的坑）、<b>明确的不做清单</b>（不训练模型、不打板、不做账号体系、不做多端）。<b>主动示弱比全面吹牛更能拿这一维的分。</b></td></tr>
+      <tr><td><b>团队能力</b><br><span class="mono" style="font-size:11px;color:var(--ink-3)">0.5 页 · 最便宜的分</span></td><td>表格：姓名 / 角色 / 负责模块 / <b>既往证据</b>。队长那行写「架构与 Agent 编排 —— 曾独立交付 FastAPI + ffmpeg 的 AI 视频生产流水线（十余个服务模块）、LLM 网关中转服务」，具体项目 + 模块数量比「5 年后端经验」有力十倍。<b>必须有一行是「路演」</b>——含演讲角色的均衡配置几乎总是胜过全技术队伍。</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="flag"><b>最重要的一条纪律：</b>预赛承诺 = 决赛「完成度」的评分基准。你写下的每个功能决赛都要兑现。把承诺压到 24 小时内 100% 做得完的范围，然后在文档里主动说「我们刻意把 MVP 压到三个功能」——这句话本身就是加分项。功能列表超过 5 条，或文档里出现「平台」「生态」「操作系统」这三个词，就是在给评委发「这队会翻车」的信号。</div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">09</span><h2>9/9 → 9/27 行动清单</h2></div>
+  <div class="weeks">
+    <div class="wk hot">
+      <div class="w">今天 · 9月9日 · 直播当晚</div>
+      <h3>只做三件事</h3>
+      <ul>
+        <li><b>听直播时专抓三样：</b>预赛模板字段、SDK 获取方式与 license 申请流程、每队能拿几台设备。</li>
+        <li><b>直播后立刻在群里问三个问题（按优先级）：</b>① SDK license（token / licenseJson / license_signature）怎么申请、什么时候能拿到——<b>没有 license 连不上真机，这是头号阻塞项</b>；② 重点标记在 SDK 里是实时事件回调还是文件元数据；③ 是否提供实时音频流、每队几台设备。</li>
+        <li><b>不要今晚就开始写文档。</b>先拿到模板。</li>
+      </ul>
+    </div>
+    <div class="wk">
+      <div class="w">第一周 · 9/10 – 9/15</div>
+      <h3>定人、定题、拿设备</h3>
+      <ul>
+        <li><b>9/11 前把四个人的角色钉死</b>：谁做 Android、谁做信号处理、谁做硬件结构、谁做路演。<b>缺 Android 原生是最大缺口。</b></li>
+        <li>申请 SDK + 领设备，走完 license 流程。</li>
+        <li>把 <code>SoundcoreSDKDemo</code> 跑起来。就算没 license 连不上真机，也要把工程编译通过、六组能力的类名和回调结构读一遍。</li>
+        <li>读社区实现理解协议——<b>只读不抄</b>，注意许可证陷阱。</li>
+        <li><b>做 5 个真实用户访谈</b>（车间管理员 / 设备维修工，30 分钟一个）。只有这一周有时间做。</li>
+      </ul>
+    </div>
+    <div class="wk hot">
+      <div class="w">第二周 · 9/16 – 9/22 · 生死线</div>
+      <h3>技术穿刺，用真设备验证而不是推理</h3>
+      <ul>
+        <li><b>【最高优先级】音频通路实测：</b>设备录一段风扇声 → SDK 拉出来 → 看频谱。判断标准：正常态与异常态的梅尔谱距离是否可分。<b>这条不通，当场换方向一，不要拖到 10 月。</b></li>
+        <li><b>重点标记实测：</b>录音中双击三次，拉文件看有无 marker 元数据；同时挂所有回调看有无实时事件。都不通则降级为「App 端按钮模拟」，并在文档里诚实写明。</li>
+        <li>Wi-Fi SoftAP 快传实测：测传输耗时和切热点后断网时长——<b>决定你路演时敢承诺几秒响应</b>。</li>
+        <li><b>Walking skeleton：</b>手机麦克风 → 特征 → 阈值 → 插座断电，端到端跑通一次。这步完全不依赖录音豆，先证明下游管线是通的，10/16 那天只剩「把输入源换成豆子」一件事。</li>
+      </ul>
+    </div>
+    <div class="wk">
+      <div class="w">第三周 · 9/23 – 9/27</div>
+      <h3>写文档，砍承诺</h3>
+      <ul>
+        <li>9/23–24 写完初稿，数据流图先画、文字后填。</li>
+        <li><b>9/25 承诺瘦身：</b>逐条问「这条功能，10/16 到 10/17 之间四个人 100% 做得完吗？」做不完的<b>删掉，不是标为「如时间允许」</b>。</li>
+        <li><b>9/26 外部评审：</b>找一个不了解项目的工程师朋友，只给文档，让他复述「这东西是干什么的」。复述不出来 = 选题明确度不及格，回去重写第一句话。</li>
+        <li><b>9/27 白天提交，不要拖到 23:59。</b>顺便列决赛物料清单（磁吸托架、灯条、智能插座、热敏打印机、备用手机、充电宝、演示用的那台机器），10 月初就该到货。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <b>2026-09-10 更新：</b>并入 9/9「命题解析夜」的飞书智能纪要（20:00–22:00，653 人参会，WaytoAGI 承办）。纪要由 AI 生成，其中「边录边传」与「3+2 路演时长」两条与官方书面材料冲突，已在正文标注存疑，须向主办方核实。<br><br>
+  来源与可信度：产品格局、获奖案例、设备规格与 SDK 三个角度共 53 条结论，全部经独立事实核查（CONFIRMED 51 / UNVERIFIABLE 2），1 条编造已剔除。第四个角度「赛题反推」有 7 条被标为 UNVERIFIABLE，原因是调研 agent 无法从公开渠道获取赛题原文——<b>但这部分赛制信息（四个动词、五个评审维度、24 小时赛制）已由官方《赛事细则》原文逐条核对确认</b>；路演时长一条现因直播纪要出现冲突，转为待核实。<br>
+  「重点标记」的 SDK 行为、Opus 压缩对机器声频谱的影响，是两个未验证且决定方案生死的未知项，必须在 9 月用真机实测。
+</footer>
+
+</div>

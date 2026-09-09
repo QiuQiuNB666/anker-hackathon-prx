@@ -1,0 +1,507 @@
+<title>安克黑客松作战板</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --paper:#F6F6F3; --panel:#FFFFFF; --sunk:#EDEDE8;
+  --ink:#16191F; --ink-2:#454C58; --ink-3:#78808E;
+  --rule:#DCDCD5; --rule-2:#C9C9C1;
+  --brand:#2C4B9B; --brand-soft:#E5EAF6;
+  --alarm:#B4351F; --alarm-soft:#F7E6E2;
+  --ok:#2E6B4F; --ok-soft:#E3EFE8;
+  --t1:#3B5BA5; --t2:#2E7D6B; --t3:#B0741C; --t4:#A8453A;
+  --t1-soft:#E7ECF7; --t2-soft:#E2EFEA; --t3-soft:#F7EDDC; --t4-soft:#F7E7E4;
+}
+:root:not([data-theme="light"]){}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#101319; --panel:#171B23; --sunk:#1D222B;
+    --ink:#EDEFF2; --ink-2:#AEB6C2; --ink-3:#7C8593;
+    --rule:#2A303B; --rule-2:#39414F;
+    --brand:#7FA0E8; --brand-soft:#1C2740;
+    --alarm:#E8836C; --alarm-soft:#3A211C;
+    --ok:#6FBF95; --ok-soft:#16281F;
+    --t1:#8AA5E4; --t2:#6FBFA5; --t3:#DDA94E; --t4:#E08878;
+    --t1-soft:#1B2338; --t2-soft:#15271F; --t3-soft:#2C2412; --t4-soft:#301C19;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101319; --panel:#171B23; --sunk:#1D222B;
+  --ink:#EDEFF2; --ink-2:#AEB6C2; --ink-3:#7C8593;
+  --rule:#2A303B; --rule-2:#39414F;
+  --brand:#7FA0E8; --brand-soft:#1C2740;
+  --alarm:#E8836C; --alarm-soft:#3A211C;
+  --ok:#6FBF95; --ok-soft:#16281F;
+  --t1:#8AA5E4; --t2:#6FBFA5; --t3:#DDA94E; --t4:#E08878;
+  --t1-soft:#1B2338; --t2-soft:#15271F; --t3-soft:#2C2412; --t4-soft:#301C19;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  font-size:15px; line-height:1.75; margin:0;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:940px; margin:0 auto; padding:0 24px 96px}
+h1,h2,h3{font-family:"Noto Serif SC",Georgia,"Songti SC",serif; text-wrap:balance; margin:0}
+.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums}
+
+/* ---------- masthead ---------- */
+.mast{padding:56px 0 28px; border-bottom:2px solid var(--ink)}
+.kicker{
+  font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--brand); font-weight:700; margin-bottom:14px;
+  font-family:"JetBrains Mono",monospace;
+}
+.mast h1{font-size:clamp(30px,5.5vw,46px); font-weight:700; line-height:1.2; letter-spacing:-.01em}
+.mast .theme{
+  margin-top:14px; font-size:16px; color:var(--ink-2);
+  font-family:"Noto Serif SC",serif; font-style:italic;
+}
+.mast .meta{
+  margin-top:20px; display:flex; flex-wrap:wrap; gap:8px 22px;
+  font-size:12.5px; color:var(--ink-3);
+}
+.mast .meta b{color:var(--ink-2); font-weight:500}
+
+/* ---------- status ---------- */
+.status{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:1px; background:var(--rule); border:1px solid var(--rule);
+  margin:32px 0 0;
+}
+.st{background:var(--panel); padding:18px 20px}
+.st .lab{
+  font-size:10.5px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--ink-3); font-family:"JetBrains Mono",monospace; margin-bottom:9px;
+}
+.st .val{font-size:19px; font-weight:700; line-height:1.25; display:flex; align-items:baseline; gap:7px}
+.st .sub{font-size:12px; color:var(--ink-3); margin-top:5px}
+.st.count{background:var(--alarm-soft)}
+.st.count .val{color:var(--alarm)}
+.st.count .num{font-family:"JetBrains Mono",monospace; font-size:34px; line-height:1}
+.dot{width:8px; height:8px; border-radius:50%; flex:none; align-self:center}
+.dot.on{background:var(--ok)} .dot.off{background:var(--alarm)}
+
+/* ---------- sections ---------- */
+section{margin-top:60px}
+.sec-h{display:flex; align-items:baseline; gap:14px; margin-bottom:8px; border-bottom:1px solid var(--rule-2); padding-bottom:10px}
+.sec-h h2{font-size:22px; font-weight:700; letter-spacing:-.01em}
+.sec-h .n{
+  font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--brand);
+  font-weight:700; flex:none;
+}
+.lede{color:var(--ink-2); font-size:14.5px; margin:14px 0 22px; max-width:62ch}
+
+/* ---------- timeline ---------- */
+.tl{display:grid; gap:0}
+.tl-row{
+  display:grid; grid-template-columns:112px 1fr; gap:20px;
+  padding:15px 0; border-bottom:1px solid var(--rule);
+}
+.tl-row:first-child{border-top:1px solid var(--rule)}
+.tl-row.now{background:var(--brand-soft); margin:0 -14px; padding-left:14px; padding-right:14px}
+.tl-row.dl{background:var(--alarm-soft); margin:0 -14px; padding-left:14px; padding-right:14px}
+.tl-d{
+  font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:700;
+  color:var(--ink); padding-top:2px; white-space:nowrap;
+}
+.tl-row.dl .tl-d{color:var(--alarm)}
+.tl-t{font-weight:500; margin-bottom:3px}
+.tl-b{font-size:13.5px; color:var(--ink-2)}
+.tag{
+  display:inline-block; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  font-family:"JetBrains Mono",monospace; padding:2px 7px; margin-left:9px;
+  border:1px solid currentColor; vertical-align:1px;
+}
+.tag.a{color:var(--alarm)} .tag.b{color:var(--brand)} .tag.o{color:var(--ok)}
+
+/* ---------- steps ---------- */
+.steps{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:18px}
+.step{border-left:3px solid var(--brand); padding:2px 0 2px 16px}
+.step .num{font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--brand); font-weight:700; letter-spacing:.1em}
+.step h3{font-size:16px; margin:5px 0 6px; font-weight:700}
+.step p{margin:0; font-size:13.5px; color:var(--ink-2)}
+.warn{
+  margin-top:22px; border:1px solid var(--alarm); background:var(--alarm-soft);
+  padding:14px 18px; font-size:13.5px; color:var(--ink);
+}
+.warn b{color:var(--alarm)}
+
+/* ---------- tracks ---------- */
+.tracks{display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:16px}
+.trk{border:1px solid var(--rule-2); border-top:4px solid var(--c); background:var(--panel); padding:18px 20px 20px}
+.trk .tn{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.14em; color:var(--c); font-weight:700}
+.trk h3{font-size:17px; margin:7px 0 4px; font-weight:700}
+.trk .tag-line{font-size:13px; color:var(--ink-2); font-family:"Noto Serif SC",serif; font-style:italic; margin-bottom:12px}
+.trk .hw{background:var(--cs); padding:9px 11px; font-size:12.5px; margin-bottom:11px}
+.trk .hw b{color:var(--c)}
+.trk p{margin:0; font-size:13px; color:var(--ink-2); line-height:1.65}
+
+/* ---------- criteria ---------- */
+.crit{border:1px solid var(--rule); border-collapse:collapse; width:100%; font-size:13.5px}
+.crit th,.crit td{border:1px solid var(--rule); padding:11px 14px; text-align:left; vertical-align:top}
+.crit th{background:var(--sunk); font-weight:700; font-size:12px; letter-spacing:.06em}
+.crit td:first-child{font-weight:700; white-space:nowrap; width:1%; color:var(--brand)}
+.crit td{color:var(--ink-2)}
+.scroll{overflow-x:auto}
+
+/* ---------- template ---------- */
+.tpl{display:grid; gap:14px}
+.tm{border:1px solid var(--rule-2); background:var(--panel); padding:15px 18px 17px}
+.tm .mh{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:8px}
+.tm .mi{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.14em; color:var(--brand); font-weight:700}
+.tm .mh b{font-family:"Noto Serif SC",serif; font-size:16px}
+.tm .req{font-size:10.5px; letter-spacing:.1em; font-family:"JetBrains Mono",monospace; color:var(--alarm); border:1px solid currentColor; padding:1px 6px}
+.tm .req.opt{color:var(--ink-3)}
+.tm p{margin:0; font-size:13.5px; color:var(--ink-2)}
+.sub4{display:grid; gap:9px; margin-top:11px; padding-left:15px; border-left:2px solid var(--rule-2)}
+.sub4 div{font-size:13px}
+.sub4 b{display:block; color:var(--ink); margin-bottom:1px}
+.sub4 span{color:var(--ink-2)}
+.sub4 span b{display:inline; color:var(--ink)}
+
+/* ---------- finals ---------- */
+.two{display:grid; grid-template-columns:1fr 1fr; gap:26px}
+@media(max-width:680px){.two{grid-template-columns:1fr}}
+.spec{display:grid; gap:0; font-size:13.5px}
+.spec div{display:grid; grid-template-columns:88px 1fr; gap:14px; padding:9px 0; border-bottom:1px solid var(--rule)}
+.spec dt{color:var(--ink-3); font-size:12.5px}
+.spec dd{margin:0; color:var(--ink-2)}
+.clock{
+  background:var(--ink); color:var(--paper); padding:20px 22px; margin-bottom:18px;
+}
+.clock .big{font-family:"JetBrains Mono",monospace; font-size:40px; font-weight:700; line-height:1}
+.clock .r{font-size:12.5px; opacity:.72; margin-top:7px; font-family:"JetBrains Mono",monospace}
+
+/* ---------- prizes ---------- */
+.prz{width:100%; border-collapse:collapse; font-size:14px}
+.prz th{text-align:left; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); padding:0 0 9px; border-bottom:2px solid var(--ink); font-family:"JetBrains Mono",monospace}
+.prz td{padding:13px 0; border-bottom:1px solid var(--rule)}
+.prz .amt{font-family:"JetBrains Mono",monospace; font-weight:700; font-size:17px; text-align:right; white-space:nowrap}
+.prz .who{color:var(--ink-3); font-size:12.5px}
+.prz tr.top .amt{color:var(--brand)}
+.perk{margin-top:20px; background:var(--brand-soft); border-left:3px solid var(--brand); padding:14px 18px; font-size:13.5px}
+.perk b{color:var(--brand)}
+
+/* ---------- pitfalls ---------- */
+.pits{display:grid; gap:11px}
+.pit{display:grid; grid-template-columns:auto 1fr; gap:13px; align-items:start; border:1px solid var(--rule-2); padding:13px 16px; background:var(--panel)}
+.pit .x{color:var(--alarm); font-weight:700; font-family:"JetBrains Mono",monospace; font-size:13px; line-height:1.7}
+.pit b{display:block; margin-bottom:2px}
+.pit span{font-size:13px; color:var(--ink-2)}
+
+footer{margin-top:64px; padding-top:20px; border-top:1px solid var(--rule); font-size:12px; color:var(--ink-3)}
+footer a{color:var(--brand)}
+@media(prefers-reduced-motion:no-preference){.st.count .num{transition:opacity .3s}}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kicker">Anker 首届黑客松挑战赛 · 2026</div>
+  <h1>让创造发生，让世界看见</h1>
+  <div class="theme">四条赛道，全部基于安克真实产品线的 SDK 与硬件底座——优秀作品有机会进入真实产品线。</div>
+  <div class="meta">
+    <span><b>赛期</b> 9月7日 – 10月17日</span>
+    <span><b>决赛</b> 深圳 · 雪花科技大厦 5F</span>
+    <span><b>规模</b> 30 队入围 / 约 100–120 人</span>
+    <span><b>门槛</b> 年满 18 岁，不限学历专业</span>
+  </div>
+</header>
+
+<div class="status">
+  <div class="st">
+    <div class="lab">报名状态</div>
+    <div class="val"><span class="dot on"></span>已报名</div>
+    <div class="sub">9月8日 03:20 系统回执确认</div>
+  </div>
+  <div class="st">
+    <div class="lab">队伍</div>
+    <div class="val"><span class="dot on"></span>PRX · 4 人</div>
+    <div class="sub">智能录音 · 已线下组齐，9/27 表单登记</div>
+  </div>
+  <div class="st count">
+    <div class="lab">距预赛提交截止</div>
+    <div class="val"><span class="num" id="dd">19</span>天</div>
+    <div class="sub" id="ddsub">9月27日 23:59 截止，逾期不受理</div>
+  </div>
+</div>
+
+<section>
+  <div class="sec-h"><span class="n">01</span><h2>完整赛程</h2></div>
+  <p class="lede">全程北京时间。整体三个阶段：报名 → 预赛 → 线下决赛。真正的分水岭只有一个——9月27日。</p>
+  <div class="tl">
+    <div class="tl-row">
+      <div class="tl-d">9月7日</div>
+      <div><div class="tl-t">报名开放，官宣发布</div><div class="tl-b">官方交流群建立，选手中心上线</div></div>
+    </div>
+    <div class="tl-row now">
+      <div class="tl-d">9月9日</div>
+      <div><div class="tl-t">直播第一期：赛题解析<span class="tag b">就是今天</span></div><div class="tl-b">四大赛题方向、业务背景、评审重点。直播后释放预赛任务模板。PRX 的具体场景等这场之后再定。</div></div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-d">9月7–27日</div>
+      <div><div class="tl-t">自由组队期</div><div class="tl-b">小红书发帖 / 选手中心招募大厅 / 官方群内发帖，三种找队友方式</div></div>
+    </div>
+    <div class="tl-row dl">
+      <div class="tl-d">9月27日</div>
+      <div><div class="tl-t">报名截止 + 预赛提交截止 <span class="tag a">23:59 硬线</span></div><div class="tl-b">两件事同一天到期。组队也在这天最终锁定。</div></div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-d">9月28–30日</div>
+      <div><div class="tl-t">预赛评审</div><div class="tl-b">评审团按五维度权重制打分</div></div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-d">9月30日</div>
+      <div><div class="tl-t">公布入围 30 强</div><div class="tl-b">邮件 + 短信 + 选手中心「入围名单表」三渠道通知。队长须在 48 小时内确认参赛，逾期由候补替补。</div></div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-d">10月16–17日</div>
+      <div><div class="tl-t">线下决赛 <span class="tag o">24 小时</span></div><div class="tl-b">深圳雪花科技大厦，集中开发 + 路演答辩 + 颁奖。提供帐篷区过夜。</div></div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-d">10月17日</div>
+      <div><div class="tl-t">技术开放日</div><div class="tl-b">安克大楼 1F，10:00–18:00。14 间企业展位，入围选手凭证件自由进出，无需预约。</div></div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-d">10月26日</div>
+      <div><div class="tl-t">获奖选手返场</div><div class="tl-b">—</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><span class="n">02</span><h2>参赛只有三步</h2></div>
+  <p class="lede">官方原话：「完整参赛流程很简单：先报名，最后提交预赛文档。」但中间这一步最容易掉队。</p>
+  <div class="steps">
+    <div class="step">
+      <div class="num">STEP 1 · 已完成</div>
+      <h3>每人单独报名</h3>
+      <p>报名不筛人，人人可报。注意是「每人」——队伍里每个成员都要自己交一份报名表。</p>
+    </div>
+    <div class="step">
+      <div class="num">STEP 2 · 已完成</div>
+      <h3>完成组队</h3>
+      <p>PRX 4 人已线下组齐，赛道智能录音。<b>不走招募大厅</b>——官方红字写明「最终队伍信息以提交预赛的队伍信息为准」，大厅只是给找不到队友的人用的撮合平台。</p>
+    </div>
+    <div class="step" style="border-color:var(--alarm)">
+      <div class="num" style="color:var(--alarm)">STEP 3 · 你在这里</div>
+      <h3>提交预赛材料</h3>
+      <p>用官方模板写方案，填提交表单并附文档链接。每队仅能提交一次。</p>
+    </div>
+  </div>
+  <div class="warn"><b>❗ 官方明确警告：</b>仅提交报名表、或仅提交预赛材料，都不构成完赛资格。<b>必须完成组队并提交预赛文档</b>才能进入评审。系统会在提交时校验全部队员是否都在已报名池内——有一个人没报名，整队交不上去。</div>
+</section>
+
+<section>
+  <div class="sec-h"><span class="n">03</span><h2>四条赛道</h2></div>
+  <p class="lede">每队只能选一条，提交后锁定，原则上不可更换。四条都不是虚构命题，用的是安克在售产品的真实 SDK 和硬件。</p>
+  <div class="tracks">
+    <div class="trk" style="--c:var(--t1); --cs:var(--t1-soft)">
+      <div class="tn">TRACK 01</div>
+      <h3>智能录音</h3>
+      <div class="tag-line">把一次「听见」，变成一次真正的理解</div>
+      <div class="hw"><b>硬件底座</b>　录音豆 / soundcore Work 3200 + 移动端 SDK</div>
+      <p>做一个手机端应用，结合设备的录音、重点标记、状态信息能力。可以改造设备形态、加外设、嵌入自制装置。场景举例：采访、陪护、维修、训练、桌游、调研。要求不止于转写，要能理解、联动、反馈、推进流程。</p>
+    </div>
+    <div class="trk" style="--c:var(--t2); --cs:var(--t2-soft)">
+      <div class="tn">TRACK 02</div>
+      <h3>智能安防</h3>
+      <div class="tag-line">把一段画面变成一句安心</div>
+      <div class="hw"><b>硬件底座</b>　Anker eufy 摄像头 + 官方 SDK</div>
+      <p>调用官方 SDK 重新定义一款 App，或从设备本体延展，把它放进一个具体的人、空间、任务里。核心是让画面产生「安心」这种可感知的结果，而不只是录像。</p>
+    </div>
+    <div class="trk" style="--c:var(--t3); --cs:var(--t3-soft)">
+      <div class="tn">TRACK 03</div>
+      <h3>充电储能</h3>
+      <div class="tag-line">让 AI 决定每一度电怎么用</div>
+      <div class="hw"><b>硬件底座</b>　Anker SOLIX 阳台光储 + 开源 Home Assistant 插件</div>
+      <p>在 Home Assistant 里做一个「家庭能源大脑」，用插件的实时功率、电池状态、控制写入能力，接入电价与天气信号。场景：光伏自用、动态电价套利、阶梯档位控制、停电备电。要能预测、决策、执行并解释。</p>
+    </div>
+    <div class="trk" style="--c:var(--t4); --cs:var(--t4-soft)">
+      <div class="tn">TRACK 04</div>
+      <h3>智能服务</h3>
+      <div class="tag-line">真正听懂，真正解决</div>
+      <div class="hw"><b>硬件底座</b>　纯软件：LLM + 多模态 + 知识库检索</div>
+      <p>做面向真实售后场景的客服 Agent 加高交互前端。要处理情绪识别、产品消歧（「S1 Pro 不吸了」是吸奶器还是扫地机）、故障定位、排障引导、升级处理。四条里唯一不依赖硬件的赛道。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><span class="n">04</span><h2>预赛：交什么，怎么写，怎么评</h2></div>
+  <p class="lede">预赛是纯文档评审，不需要写代码。9月28–30日评审，从全部报名队伍里筛出 30 支。</p>
+  <div class="two">
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px">提交清单</h3>
+      <div class="spec">
+        <div><dt>队名</dt><dd>队伍名称</dd></div>
+        <div><dt>赛道</dt><dd>四选一，提交后锁定</dd></div>
+        <div><dt>队长</dt><dd>姓名 + 邮箱 + 手机号，唯一官方联系人</dd></div>
+        <div><dt>队员</dt><dd>1–3 人，各自姓名 + 邮箱 + 手机号，用于校验报名</dd></div>
+        <div><dt>方案</dt><dd>按官方模板撰写，提交文档链接</dd></div>
+      </div>
+      <div class="warn" style="margin-top:16px"><b>身份校验：</b>队长与队员均以「姓名 + 邮箱 + 手机号」作为唯一身份识别。三者要和报名表完全一致，否则校验不过。</div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px">评审五维度（权重制）</h3>
+      <div class="scroll">
+      <table class="crit">
+        <tr><td>选题明确度</td><td>是否抓住赛道真实业务场景的核心矛盾，而非泛泛而谈</td></tr>
+        <tr><td>方案清晰度</td><td>2–3 个核心功能点说清「做什么、怎么做、为什么这样做」</td></tr>
+        <tr><td>项目创新性</td><td>是否体现 AI Native 思维，而非套用现有方案</td></tr>
+        <tr><td>落地可行性</td><td>24 小时内能否做出可演示原型，是否务实</td></tr>
+        <tr><td>团队能力</td><td>技能组合能否支撑方案实现</td></tr>
+      </table>
+      </div>
+      <p style="font-size:13px;color:var(--ink-3);margin-top:12px">注意「落地可行性」这一条：评委是拿 24 小时的决赛时长在倒推你的方案，写太大反而扣分。</p>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;margin:34px 0 6px">官方模板的骨架</h3>
+  <p style="font-size:13.5px;color:var(--ink-2);margin:0 0 18px;max-width:62ch">模板可一键创建副本。官方明说「并非统一格式要求」，欢迎融入团队风格——但三个模块必须都在。</p>
+
+  <div class="tpl">
+    <div class="tm">
+      <div class="mh"><span class="mi">模块一</span><b>预赛信息卡</b><span class="req">必须包含</span></div>
+      <p>队名 · 意向赛道 · 一句话摘要 · 队长信息（姓名/邮箱/手机号）· 成员介绍与分工（2–4 人含队长，每人的姓名、邮箱、负责工作）</p>
+    </div>
+    <div class="tm">
+      <div class="mh"><span class="mi">模块二</span><b>方案成果展示</b><span class="req">必须包含</span></div>
+      <p>正文主体，四个小节：</p>
+      <div class="sub4">
+        <div><b>赛题理解</b><span>1–2 句说清对命题的理解 + 目标用户是谁、什么特征。官方原话「不需要长篇大论」。</span></div>
+        <div><b>具体方案说明（突出 AI 能力）</b><span>标记为「非常重要」。展开 <b>2–3 个核心功能点</b>，每个说清「做什么 / 怎么做」，并建议配流程图、页面示意图、原型图或功能结构图。</span></div>
+        <div><b>方案价值与预期效果</b><span>落地后带来的价值，可测算节省的时间成本与效率提升。<b>并说明 24 小时内能做出什么样的可演示原型。</b></span></div>
+        <div><b>方案优势 / 创新点</b><span>几句话：覆盖范围、AI 能力的创新用法、与现有方案的差异化、量化价值估算。</span></div>
+      </div>
+    </div>
+    <div class="tm">
+      <div class="mh"><span class="mi">模块三</span><b>自由展示区</b><span class="req opt">可选 · 加分项</span></div>
+      <p>技术架构草图、迭代规划、相关项目经历、获奖证明、成员详细介绍。形式不限。评审维度「团队能力匹配」里写着<b>「参考过往作品链接（选填但强烈建议）」</b>——这一栏值得填。</p>
+    </div>
+  </div>
+
+  <div class="warn" style="margin-top:20px"><b>⚠ 提交前必做：</b>模板里单独提示——提交预赛方案文档前，<b>务必开启「互联网获取链接可阅读权限」</b>。评审打不开你的文档，等同于没交。</div>
+
+  <div class="perk" style="margin-top:14px"><b>官方给的减负说明：</b>预赛阶段以轻量化为主，核心内容（赛题理解 + 解决方案）建议控制在精炼篇幅，<b>不要求 Demo、代码、完整立项文档或架构说明</b>。重点是让评审快速理解你们要做什么、为什么做、怎么做。</div>
+</section>
+
+<section>
+  <div class="sec-h"><span class="n">05</span><h2>线下决赛</h2></div>
+  <div class="two">
+    <div>
+      <div class="clock">
+        <div class="big">24:00:00</div>
+        <div class="r">10/16 14:00 开赛 → 10/17 14:00 截止</div>
+      </div>
+      <div class="spec">
+        <div><dt>地点</dt><dd>深圳 · 雪花科技大厦（华润啤酒学习与创新中心 5F）</dd></div>
+        <div><dt>开发场地</dt><dd>503 大培训室主开发区，506 / 505 研讨休息</dd></div>
+        <div><dt>路演场地</dt><dd>501 阶梯教室</dd></div>
+        <div><dt>过夜</dt><dd>帐篷区，10月16日晚开放</dd></div>
+        <div><dt>硬件</dt><dd>入围队可申请赛题相关设备，赛后归还</dd></div>
+        <div><dt>差旅</dt><dd>外地可申请补贴；住宿优先覆盖 25 岁以下青年 / 学生；比赛期间三餐保障</dd></div>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px">路演规则</h3>
+      <div class="spec">
+        <div><dt>顺序</dt><dd>10月17日 14:00–15:00 现场抽签</dd></div>
+        <div><dt>时长</dt><dd>6 分钟演示 + 3 分钟问答 = 9 分钟，严格计时</dd></div>
+        <div><dt>计时</dt><dd>提前 30 秒举牌，超时直接切下一组</dd></div>
+        <div><dt>要求</dt><dd>必须现场演示可运行原型，配 PPT 讲解</dd></div>
+      </div>
+      <h3 style="font-size:15px;margin:22px 0 12px">决赛评审维度</h3>
+      <div class="scroll">
+      <table class="crit">
+        <tr><td>完成度</td><td>可运行、功能完整、是否兑现预赛承诺</td></tr>
+        <tr><td>产品创新</td><td>差异化与软硬件结合价值</td></tr>
+        <tr><td>技术实现</td><td>SDK / 硬件能力是否被充分利用</td></tr>
+        <tr><td>场景价值</td><td>是否解决真实问题、有落地潜力</td></tr>
+        <tr><td>路演表现</td><td>表达、答辩、团队协作展示</td></tr>
+      </table>
+      </div>
+      <p style="font-size:13px;color:var(--ink-3);margin-top:12px">官方标注「待定」，最终以决赛现场公布为准。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><span class="n">06</span><h2>奖项</h2></div>
+  <p class="lede">四条赛道各自评冠亚季军，即每个名次都有 4 个名额。奖金为税前，主办方代扣代缴个税。</p>
+  <div class="scroll">
+  <table class="prz">
+    <thead><tr><th>奖项</th><th style="text-align:right">奖金</th></tr></thead>
+    <tbody>
+      <tr class="top"><td><b>冠军</b> <span class="who">每赛道 1 名，共 4 名</span></td><td class="amt">¥30,000</td></tr>
+      <tr><td><b>亚军</b> <span class="who">每赛道 1 名，共 4 名</span></td><td class="amt">¥10,000</td></tr>
+      <tr><td><b>季军</b> <span class="who">每赛道 1 名，共 4 名</span></td><td class="amt">¥5,000</td></tr>
+      <tr><td><b>金点子奖</b> <span class="who">线下投票总和，鼓励创意与传播</span></td><td class="amt">¥5,000</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="perk"><b>人才通道：</b>表现优异者可直接获得 Anker <b>SSP 级 Offer</b> 及实习 Offer。所有入围选手加入 Anker 创造者社群，持续获得技术交流、内推和活动机会。<br><b>UGC 激励：</b>招募期带 #Anker安克黑客松 晒入围通知，点赞前五得产品奖励；赛事期带 #Anker安克黑客松进行时，点赞前三得 Prompt King/Queen 大奖及现金。</div>
+</section>
+
+<section>
+  <div class="sec-h"><span class="n">07</span><h2>容易踩的坑</h2></div>
+  <p class="lede">以下每一条都是细则或 FAQ 里写死的硬规则，不是建议。</p>
+  <div class="pits">
+    <div class="pit"><span class="x">01</span><div><b>队员漏报名 → 整队无法提交</b><span>系统在预赛提交时校验全部队员是否在已报名池内。你自己已报名不代表队友报了。组队后第一件事是逐个确认。</span></div></div>
+    <div class="pit"><span class="x">02</span><div><b>未报名就开团，队伍会被自动取消</b><span>组队大厅里已经出现两条「系统拦截·未报名，开团自动取消」的记录。先报名，再开团。</span></div></div>
+    <div class="pit"><span class="x">03</span><div><b>赛道提交后锁定</b><span>每队限选一个赛道，交了原则上不可换。建议看完 9月9日 的赛题解析直播再定。</span></div></div>
+    <div class="pit"><span class="x">04</span><div><b>每人限一队</b><span>不能脚踏两条船，谨慎确认后再提交。</span></div></div>
+    <div class="pit"><span class="x">05</span><div><b>每队仅能提交一次预赛</b><span>不可重复提交，要改只能在截止前联系主办方。</span></div></div>
+    <div class="pit"><span class="x">06</span><div><b>提交后不可换队员</b><span>原则上不可更换，特殊情况需联系主办方。</span></div></div>
+    <div class="pit"><span class="x">07</span><div><b>知识产权：方案归你，但摘要授权公开</b><span>提交即视为授权主办方在宣传中使用队名和方案摘要。涉及商业机密必须<b>提前标注</b>——未标注的，主办方不承担保密义务。</span></div></div>
+    <div class="pit"><span class="x">08</span><div><b>入围后 48 小时内必须确认</b><span>队长在「选手中心 - 我的赛事信息 - 参赛状态」确认，逾期视为放弃，由候补替补。</span></div></div>
+    <div class="pit"><span class="x">09</span><div><b>预赛文档忘开公开阅读权限</b><span>提交的是文档<b>链接</b>不是附件。模板里专门提示要开启「互联网获取链接可阅读权限」——评审点不开，等同于没交。</span></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><span class="n">08</span><h2>接下来该做的</h2></div>
+  <div class="steps">
+    <div class="step" style="border-color:var(--alarm)">
+      <div class="num" style="color:var(--alarm)">今晚</div>
+      <h3>看赛题解析直播</h3>
+      <p>四大赛题的业务背景和评审重点在这场讲，直播后才释放预赛任务模板。PRX 的具体场景等看完再定。</p>
+    </div>
+    <div class="step" style="border-color:var(--alarm)">
+      <div class="num" style="color:var(--alarm)">本周内 · 最易翻车</div>
+      <h3>确认 4 人全部报名</h3>
+      <p>队伍不在系统里登记没关系，但<b>每个人的报名记录必须在</b>。预赛提交时系统按「姓名 + 邮箱 + 手机号」逐个校验，漏一个整队交不上去，且 9/27 之后无法补救。现在就让另外 3 人各自交一遍报名表。</p>
+    </div>
+    <div class="step">
+      <div class="num">9月27日前</div>
+      <h3>写预赛方案</h3>
+      <p>按模板写，聚焦 2–3 个核心功能点，并证明 24 小时内能做出来。别写宏大叙事。</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  信息来源（均取自 2026年9月8日）：官方《赛事细则》全文、《预赛材料模板》全文、选手中心 FAQ 17 条与组队大厅数据、官方交流群置顶公告。<br>
+  未取到：《参赛协议》正文（嵌在同步块中，仅细则内的知识产权摘要可见）；决赛两日详细赛程（官方标注「后续陆续公布」）；赛事官网 career.anker.com.cn/hackathon（本机网络不可达，未纳入核对）。如与官方后续通知冲突，以官方为准。
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var deadline = new Date('2026-09-27T23:59:00+08:00');
+  var el = document.getElementById('dd'), sub = document.getElementById('ddsub');
+  if(!el) return;
+  function tick(){
+    var ms = deadline - new Date();
+    if(ms <= 0){ el.textContent='0'; sub.textContent='9月27日 23:59 已截止'; return; }
+    var d = Math.floor(ms/86400000);
+    var h = Math.floor(ms/3600000) % 24;
+    el.textContent = d;
+    sub.textContent = '9月27日 23:59 截止 · 还剩 ' + d + ' 天 ' + h + ' 小时';
+  }
+  tick(); setInterval(tick, 60000);
+})();
+</script>
