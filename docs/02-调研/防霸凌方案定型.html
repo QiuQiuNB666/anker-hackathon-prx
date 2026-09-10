@@ -1,0 +1,407 @@
+<title>防霸凌方案定型</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --paper:#F7F5F2; --panel:#FFFFFF; --sunk:#EDEAE5;
+  --ink:#1A1714; --ink-2:#4C4640; --ink-3:#807870;
+  --rule:#DEDAD4; --rule-2:#C7C1B9;
+  --key:#7A4A2B; --key-soft:#F0E6DC;
+  --stop:#9E2B20; --stop-soft:#F8E4E1;
+  --go:#2E6248; --go-soft:#E3EEE8;
+  --hold:#8A6712; --hold-soft:#F7EFDA;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#131110; --panel:#1B1917; --sunk:#221F1C;
+    --ink:#F0EDE9; --ink-2:#B3ABA2; --ink-3:#847C73;
+    --rule:#2E2A26; --rule-2:#403A34;
+    --key:#D09A6E; --key-soft:#2B1F16;
+    --stop:#E5776A; --stop-soft:#331A17;
+    --go:#6FBE96; --go-soft:#152720;
+    --hold:#D6A93F; --hold-soft:#2B2411;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131110; --panel:#1B1917; --sunk:#221F1C;
+  --ink:#F0EDE9; --ink-2:#B3ABA2; --ink-3:#847C73;
+  --rule:#2E2A26; --rule-2:#403A34;
+  --key:#D09A6E; --key-soft:#2B1F16;
+  --stop:#E5776A; --stop-soft:#331A17;
+  --go:#6FBE96; --go-soft:#152720;
+  --hold:#D6A93F; --hold-soft:#2B2411;
+}
+*{box-sizing:border-box}
+body{background:var(--paper); color:var(--ink); margin:0;
+  font-family:"Noto Sans SC",-apple-system,"PingFang SC",sans-serif; font-size:15px; line-height:1.78;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:940px; margin:0 auto; padding:0 24px 100px}
+h1,h2,h3{font-family:"Noto Serif SC",Georgia,"Songti SC",serif; margin:0; text-wrap:balance}
+.mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace; font-variant-numeric:tabular-nums}
+
+.mast{padding:54px 0 26px; border-bottom:2px solid var(--ink)}
+.kick{font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--key); font-weight:700; margin-bottom:13px}
+.mast h1{font-size:clamp(28px,5vw,42px); font-weight:700; line-height:1.22; letter-spacing:-.01em}
+.mast .sub{margin-top:15px; font-size:16px; color:var(--ink-2); font-family:"Noto Serif SC",serif;
+  font-style:italic; max-width:60ch}
+.prov{margin-top:20px; font-size:12px; color:var(--ink-3); display:flex; flex-wrap:wrap; gap:6px 22px}
+.prov b{color:var(--ink-2); font-weight:500}
+
+.verdict{margin-top:32px; border:2px solid var(--ink); background:var(--panel); padding:0}
+.verdict .hd{padding:20px 24px 16px}
+.verdict .lab{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--ink-3); font-weight:700; margin-bottom:9px}
+.verdict h2{font-size:23px; line-height:1.35}
+.verdict .cuts{display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--rule)}
+@media(max-width:640px){.verdict .cuts{grid-template-columns:1fr}}
+.cut{padding:16px 24px; background:var(--stop-soft)}
+.cut+.cut{border-left:1px solid var(--rule)}
+@media(max-width:640px){.cut+.cut{border-left:none; border-top:1px solid var(--rule)}}
+.cut .x{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.14em;
+  color:var(--stop); font-weight:700; margin-bottom:5px}
+.cut b{display:block; font-family:"Noto Serif SC",serif; font-size:16px; margin-bottom:5px}
+.cut span{font-size:13px; color:var(--ink-2)}
+
+section{margin-top:58px}
+.sh{display:flex; align-items:baseline; gap:13px; border-bottom:1px solid var(--rule-2);
+  padding-bottom:10px; margin-bottom:18px}
+.sh .n{font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; color:var(--key); flex:none}
+.sh h2{font-size:21px; font-weight:700}
+.lede{color:var(--ink-2); font-size:14.5px; max-width:64ch; margin:0 0 20px}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse; width:100%; font-size:13.5px}
+th{background:var(--sunk); text-align:left; font-weight:700; font-size:11.5px;
+  letter-spacing:.06em; padding:10px 13px; border:1px solid var(--rule)}
+td{padding:11px 13px; border:1px solid var(--rule); vertical-align:top; color:var(--ink-2)}
+td b{color:var(--ink)}
+
+.case{border:1px solid var(--stop); background:var(--stop-soft); padding:17px 20px; margin-bottom:12px}
+.case .t{font-family:"Noto Serif SC",serif; font-size:16px; font-weight:700; margin-bottom:7px; color:var(--ink)}
+.case .t em{font-style:normal; font-family:"JetBrains Mono",monospace; font-size:12px;
+  color:var(--stop); margin-left:9px; letter-spacing:.06em}
+.case p{margin:0; font-size:13.5px; color:var(--ink-2)}
+.case p+p{margin-top:8px}
+
+.six{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px}
+.pf{border:1px solid var(--rule-2); border-left:3px solid var(--go); background:var(--panel); padding:13px 16px}
+.pf .h{font-weight:700; font-size:14px; margin-bottom:4px}
+.pf .b{font-size:13px; color:var(--ink-2)}
+
+.def{border:2px solid var(--key); background:var(--key-soft); padding:22px 24px; margin-bottom:20px}
+.def .one{font-family:"Noto Serif SC",serif; font-size:19px; line-height:1.55; color:var(--ink)}
+.roles{display:grid; gap:0; margin-top:16px; padding-top:14px; border-top:1px solid var(--rule-2)}
+.roles div{display:grid; grid-template-columns:112px 1fr; gap:14px; padding:7px 0; font-size:13.5px}
+.roles dt{color:var(--key); font-weight:700; font-size:12.5px}
+.roles dd{margin:0; color:var(--ink-2)}
+
+.fn{display:grid; gap:14px}
+.fni{border:1px solid var(--rule-2); background:var(--panel); padding:16px 19px}
+.fni .no{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.14em;
+  color:var(--key); font-weight:700}
+.fni h3{font-size:16px; margin:5px 0 7px}
+.fni p{margin:0; font-size:13.5px; color:var(--ink-2)}
+.fni p+p{margin-top:7px}
+
+.nolist{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:8px}
+.no-item{display:flex; gap:10px; align-items:flex-start; font-size:13.5px;
+  border:1px solid var(--rule); background:var(--panel); padding:10px 13px}
+.no-item .m{color:var(--stop); font-weight:700; flex:none; font-family:"JetBrains Mono",monospace; font-size:12px; line-height:1.6}
+
+.shots{border-top:1px solid var(--rule)}
+.shot{display:grid; grid-template-columns:86px 1fr; gap:18px; padding:14px 0; border-bottom:1px solid var(--rule)}
+.shot .t{font-family:"JetBrains Mono",monospace; font-size:12.5px; font-weight:700; color:var(--key); white-space:nowrap}
+.shot .h{font-weight:500; margin-bottom:3px}
+.shot .d{font-size:13.5px; color:var(--ink-2)}
+.shot.peak{background:var(--key-soft); margin:0 -14px; padding-left:14px; padding-right:14px}
+.quote{font-family:"Noto Serif SC",serif; font-style:italic; border-left:3px solid var(--rule-2);
+  padding-left:13px; margin:8px 0 0; font-size:14px; color:var(--ink)}
+
+.qa{display:grid; gap:12px}
+.qi{border:1px solid var(--rule-2); background:var(--panel); padding:15px 18px}
+.qi .q{font-weight:700; font-family:"Noto Serif SC",serif; font-size:15px; margin-bottom:8px}
+.qi .q span{color:var(--key); font-family:"JetBrains Mono",monospace; font-size:12px; margin-right:8px}
+.qi .a{font-size:13.5px; color:var(--ink-2)}
+.qi .note{margin-top:9px; padding-top:9px; border-top:1px dashed var(--rule-2); font-size:12.5px; color:var(--ink-3)}
+
+.today{display:grid; gap:14px}
+.td{border-left:3px solid var(--go); padding:2px 0 2px 16px}
+.td .w{font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--go); font-weight:700; letter-spacing:.1em}
+.td h3{font-size:16px; margin:5px 0 7px}
+.td p, .td ul{margin:0; font-size:13.5px; color:var(--ink-2)}
+.td ul{padding-left:17px} .td li{margin-bottom:5px}
+
+.flag{border:1px solid var(--hold); background:var(--hold-soft); padding:14px 17px; font-size:13.5px; margin-top:18px}
+.flag b{color:var(--hold)}
+.flag.go{border-color:var(--go); background:var(--go-soft)} .flag.go b{color:var(--go)}
+.flag.stop{border-color:var(--stop); background:var(--stop-soft)} .flag.stop b{color:var(--stop)}
+code{font-family:"JetBrains Mono",monospace; font-size:12.5px; background:var(--sunk); padding:1px 5px}
+footer{margin-top:64px; padding-top:20px; border-top:1px solid var(--rule); font-size:12px; color:var(--ink-3)}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kick">Anker 黑客松 · 智能录音赛道 · PRX</div>
+  <h1>按一下，不用开口</h1>
+  <div class="sub">防霸凌方向的可行性定型。13 个 agent 并行调研，125 条结论经独立事实核查，1 条剔除。</div>
+  <div class="prov">
+    <span><b>结论</b> 方向成立，但必须删两样东西</span>
+    <span><b>年龄段</b> 9–13 岁（霸凌高发段）</span>
+    <span><b>核查</b> 2026-09-10</span>
+  </div>
+</header>
+
+<div class="verdict">
+  <div class="hd">
+    <div class="lab">判定</div>
+    <h2>能做。但团队现在设想的那个东西不能做。</h2>
+  </div>
+  <div class="cuts">
+    <div class="cut">
+      <div class="x">必须删除 · 01</div>
+      <b>「不被识别出是录音设备」</b>
+      <span>这不是保守，是唯一选择。中国已有同款形态的生效刑事判决，且「卖给家长看孩子」的目的未被采纳为出罪理由。</span>
+    </div>
+    <div class="cut">
+      <div class="x">必须删除 · 02</div>
+      <b>「自动录音」</b>
+      <span>常开录音没有合法性基础。而且同类校园声学检测的公开实测：攻击性尖叫检出 46%，非攻击性尖叫误触发 34%——接近抛硬币。</span>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="sh"><span class="n">01</span><h2>为什么不能做隐蔽外观</h2></div>
+  <p class="lede">风险主体是团队，不是孩子。刑法第 283 条（非法生产、销售窃听专用器材）<b>没有「造成严重后果」这个要件</b>，第 284 条（非法使用）才有。批量 3D 打印外壳、路演展示、赛后分发，落在 283 条这一侧。</p>
+
+  <div class="case">
+    <div class="t">上海奉贤区法院<em>生效判决</em></div>
+    <p>林某购入电子板与<b>卡通钥匙扣外壳</b>组装录音 + GPS 设备，查扣的 19 台经公安机关鉴定为窃听专用器材，判有期徒刑九个月并处罚金 3 万元，同案另有二人分别判决。</p>
+    <p><b>这就是「3D 打印可爱外壳 + 不被识别出是录音设备」的同款形态。</b>判决中未见把「卖给家长看孩子」这一主观目的采纳为出罪理由。</p>
+  </div>
+
+  <div class="case">
+    <div class="t">深圳宝安 · 汪某案<em>最高检典型案例</em></div>
+    <p>组装带采集功能的电子手环、录音笔、眼镜，一审判九个月、罚金 2 万元。<b>审判地就是本次决赛所在城市。</b>最高法 2024-12-11 发布该罪名典型案例并定调「全环节、全链条打击」。</p>
+  </div>
+
+  <div class="flag stop"><b>法条构造：</b>工商总局、公安部、质检总局第 72 号令第三条把<b>「以伪装或者隐蔽方式使用」</b>写进构成要件，其中第（二）项即「微型语音信号拾取或者录制设备」，第（六）项要求<b>「且无明显提示」</b>。录音豆本体客观上就落在第（二）项——是否构成窃听器材，完全取决于「伪装/隐蔽」与「无明显提示」这两个变量。<b>而这两个变量，正好是团队打算亲手做出来的。</b></div>
+
+  <div class="flag" style="border-color:var(--key); background:var(--key-soft)"><b>最该拿去说服团队自己的一条：</b>《最高人民法院关于适用〈民事诉讼法〉的解释》第 106 条规定，以严重侵害他人合法权益、违反法律禁止性规定的方法取得的证据，不得作为认定案件事实的根据。<b>伪装不是帮孩子取证，是毁掉孩子的证据</b>——把孩子唯一的护身符做成废纸。（注意口径：说「落入排除风险」，不要说「法院会排除」，目前没查到直接排除防霸凌自保录音的公开案例。）</div>
+
+  <h3 style="font-size:15px;margin:30px 0 8px">德国两个判例，画出了唯一那条分界线</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th style="width:200px">案例</th><th>结论</th><th style="width:180px">理由</th></tr></thead>
+    <tbody>
+      <tr><td><b>2017-11 儿童智能手表</b><br>联邦网络管理局</td><td><b>禁售。</b>要求家长销毁、要求学校排查</td><td>带静默监听功能，认定为未经许可的发射设备</td></tr>
+      <tr><td><b>2026-08 Ray-Ban Meta 眼镜</b><br>面对刑事举报</td><td><b>不予禁售</b></td><td><b>内置 LED 指示灯可让第三方察觉正在录制</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="flag"><b>同一条款、同一年代、两个相反结论，分界线只有一个：在场的人能不能察觉。</b><br>还有个必须吸收的细节——Meta 承认使用 AI 功能时 LED 会熄灭，联邦网络局就此发出过警告。这意味着<b>任何「指示灯可关闭 / 可调暗至不可见」的设计都在踩线</b>。行业答案是 Limitless Pendant 的做法：亮度可调低，但无法完全关闭，且官方明确「任何隐藏或禁用该指示灯的行为都违反服务条款」。</div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">02</span><h2>那个反转是真的，而且是全案最强的一句话</h2></div>
+  <p class="lede">「录音豆只能主动录音」这个团队当成限制的东西，在这个场景里是护城河。这不是自我安慰——六条独立证据指向同一结论。</p>
+  <div class="six">
+    <div class="pf"><div class="h">法律基础</div><div class="b">《个人信息保护法》第 13 条第（四）项「紧急情况下为保护自然人的生命健康和财产安全所必需」，是触发式录音唯一干净的合法性基础。<b>常开没有任何条款可依。</b></div></div>
+    <div class="pf"><div class="h">出罪要素</div><div class="b">72 号令的出罪要素是「明显提示」。孩子按下按键这个动作 + 橙灯长亮 + 震动反馈，构成完整的告知行为链——<b>不是 App 里的一行字，是在场所有人都看得见的物理动作。</b></div></div>
+    <div class="pf"><div class="h">证据可采性</div><div class="b">主动、公开的录音，落入民诉法解释 106 条排除风险的可能性远低于隐蔽录音。<b>想帮孩子留下有用的东西，就必须公开地留。</b></div></div>
+    <div class="pf"><div class="h">误报率</div><div class="b">判定入口只有一个——孩子的手指。误报率 0，不是因为算法好，是因为没有算法在做判定。<b>ProPublica 那组数字从弱点变成论据。</b></div></div>
+    <div class="pf"><div class="h">续航</div><div class="b">90mAh 标称 8 小时，平均约 11.25mA。11 小时上学日必然中断。触发式分段录制同时解决续航和合规，<b>常开在物理上也做不到。</b></div></div>
+    <div class="pf"><div class="h">监管方向</div><div class="b">GB 46859-2025《儿童手表安全技术要求》（强制性国标，2027-01-01 实施）要求麦克风、摄像头、定位<b>默认关闭</b>，需家长单独同意后开放。硬件的这个「限制」正好是监管要求的方向。</div></div>
+  </div>
+  <div class="flag go" style="margin-top:16px"><b>路演可以这么说：</b>安克把这个产品做成只能主动录音，恰好把我们唯一合法的形态硬编码进了硬件。<b>这是竞品无法用软件绕过的护城河。</b></div>
+
+  <div class="flag stop" style="margin-top:16px"><b>⚠ 一处必须纠正的产品事实（我此前说错了）：</b>录音键是<b>侧面按键「单击」控制录制起停</b>；<b>敲击豆体「双击」是录制中打标记</b>（飞书官方：录音中轻点两下麦克风可快速标记重点，震动确认）。这是两个不同动作，「双击求助」把两者混成了一件事，写进文档会被熟悉产品的评委当场问穿。<br><br>另外：SDK 的 README 里只有绑定异常回调和 OTA 回调，<b>没有任何按键/敲击事件的上行回调</b>——「按下 → 家长手机实时告警」在公开文档上无依据，9/27 前必须向官方确认。<b>在拿到答案前，功能设计一律按最保守的「本地录制、事后回传」来做。</b></div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">03</span><h2>产品定义</h2></div>
+  <div class="def">
+    <div class="one">一个孩子自己按下的、看得出正在录音的随身求助按钮——把「说不出口」变成「按一下」，把零散的按压变成一份能交到老师手里的事实记录。</div>
+    <div class="roles">
+      <div><dt>使用与控制</dt><dd><b>9–13 岁的孩子。</b>音频的去留、给谁看，全程由孩子决定。</dd></div>
+      <div><dt>价值接收方</dt><dd><b>学校的学生欺凌治理委员会 / 班主任。</b>不是家长。</dd></div>
+      <div><dt>知情方</dt><dd>家长 / 监护人。知道设备存在、知道使用规则，<b>但不是实时告警的接收端。</b></dd></div>
+    </div>
+  </div>
+
+  <div class="flag"><b>为什么把家长移出告警链路：</b>一是留守场景——民政部 2016 年摸底的 902 万农村留守儿童中 89.3% 由祖辈监护、4% 无人监护（这是十年前数据，监护结构成立但别当今天的用户画像用）。二是「家长可远程听」在德国是禁售级红线，2017 年那次禁令的触发情形之一恰恰是家长借儿童手表监听课堂上的教师。<b>告警发给家长这条链路，在最需要它的人群里最不通，在监管上又最危险。</b></div>
+
+  <div class="flag go"><b>而接收端其实早就存在：</b>教育部办公厅 2024-05-31《中小学校园暴力与学生欺凌防范治理专项行动「十项要求」》已要求各校成立学生欺凌治理委员会进行认定，公布防治电话、邮箱和法治副校长电话，对来电反映落实首问负责制。<b>渠道、认定主体、责任人都齐了。真正的空白是从「我被欺负了」到「我说得出口、说得清楚」那一段。</b></div>
+
+  <h3 style="font-size:15px;margin:28px 0 12px">它是求助工具。不是取证工具，不是威慑工具</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th style="width:120px">定位</th><th>为什么不是</th></tr></thead>
+    <tbody>
+      <tr><td><b>不是取证工具</b></td><td>① 民诉法解释 106 条的排除风险；② 主战场是学校欺凌治理委员会的认定程序，不是民事诉讼；③ 它天然不够——NCES 2024-109 全国数据里占比第一的霸凌形态是<b>「传谣言」13.0%，结构上不可能被受害者身上的麦克风录到</b>。能被声学捕获的只有取笑辱骂 11.9%、推搡吐口水 4.9%（部分）、威胁 3.3%、胁迫 2.5%（部分）。<b>覆盖不到一半，且漏掉占比第一的那种——这条边界必须原样写进文档，不要藏。</b></td></tr>
+      <tr><td><b>不是威慑工具</b></td><td>威慑必须靠显性存在起作用，而显性存在会招致两件事：设备被抢（已有报道案例：书包上的挂件被同学拿走，校方调监控确认）——<b>被抢的那一刻恰恰是设备最该工作的时刻</b>；以及报复升级。</td></tr>
+      <tr><td><b>是求助工具</b></td><td>同时满足三件事：主办方红线（被录人知情、非偷录）、评分导向（音频作为 AI agent 输入实现任务闭环，而非仅转为静态文档）、以及真实的问题空白。</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:15px;margin:28px 0 12px">三个核心功能</h3>
+  <div class="fn">
+    <div class="fni">
+      <div class="no">功能一 · 零 SDK 依赖</div>
+      <h3>一次按下 = 一个「时刻」</h3>
+      <p>孩子按侧面录音键开始，再按一次结束。<b>橙色指示灯长亮是对在场所有人的告知</b>，震动是对孩子的确认。录音中敲击豆体两下打标（官方已支持，单次录音可多次标记）。</p>
+      <p>全部落在设备既有行为上，不依赖任何未验证的 SDK 能力。按键是大行程自锁式，<b>按下前后按键高度不同</b>——摸一下就知道是不是在录音。这个物理高度差是第二重状态指示，<b>外壳绝对不能盖住它。</b></p>
+    </div>
+    <div class="fni">
+      <div class="no">功能二 · 合规核心</div>
+      <h3>音频不出设备，直到孩子决定</h3>
+      <p>回家后连 App，孩子自己听、自己勾选。只有被勾选的片段进入下一步。不做声纹、不做说话人识别、不做长期保存，传输完成后原音频从设备删除（官方说明书已确认此行为）。</p>
+      <p>这直接回应最难的合规死结：<b>录到的是别的孩子的声音。</b>被录到的施暴者与旁观同学多数不满 14 周岁，其语音同时踩「个人生物识别信息」与「不满十四周岁未成年人的个人信息」两条敏感线（个保法第 28 条），处理需监护人单独同意（第 29、31 条），现实中永远拿不到。<b>这个死结没有完全解开，只是把暴露面压到最小——路演要这么说，不要说「我们解决了」。</b></p>
+    </div>
+    <div class="fni">
+      <div class="no">功能三 · 命题得分点</div>
+      <h3>AI 不判定「这是不是霸凌」，而是把说不清的事变成能交出去的一页纸</h3>
+      <p>孩子勾选的片段进入 agent，产出符合学校认定程序需要的事实陈述：时间、地点、在场大致人数、说了什么、孩子当时的感受。以及——<b>多次按压的模式聚合</b>：同一时段、同一地点反复出现的分布图。</p>
+      <p><b>单条录音不是证据，模式才是。</b>一份写着「近两周内孩子在周二、周四课间操后于四楼东侧走廊按下过三次」的东西，比一段音频更能进入首问负责制的处理流程。这正是命题里「音频作为 AI agent 输入实现任务闭环，而非仅转为静态文档」的答案。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">04</span><h2>今天就能开始建模</h2></div>
+  <p class="lede">造型策略：<b>做一个背面开放的托座，不是一个包裹壳。</b>利用录音豆背面既有的磁吸片与柔性绑带做机械接口，3D 打印件本质是「能吸住磁吸面的托座 + 角色化正面圈」。省下的时间全部投在造型和状态指示上。</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th style="width:140px">参数</th><th style="width:150px">数值</th><th>来源与备注</th></tr></thead>
+    <tbody>
+      <tr><td>豆体直径</td><td class="mono"><b>23.2 mm</b></td><td>双源确认</td></tr>
+      <tr style="background:var(--stop-soft)"><td><b>豆体厚度</b></td><td class="mono"><b>13.45 mm</b></td><td>评测实测；后部磁吸部件导致机身偏厚。<b>绝对不要按 9–12mm 推测建模，会直接干涉</b></td></tr>
+      <tr><td>豆体重量</td><td class="mono">10.3 g</td><td>拆解实测</td></tr>
+      <tr><td>充电盒</td><td class="mono">60 × 60 × 14.95 mm</td><td>官方规格表</td></tr>
+      <tr><td>整套重量</td><td class="mono">约 46.3–48 g</td><td><b>48g 不是充电盒净重</b>，盒体单独约 36g，算挂绳受力别用错</td></tr>
+      <tr><td>建议内腔</td><td class="mono">Φ23.6 × 13.8 mm</td><td>单边 +0.2mm 间隙</td></tr>
+      <tr><td>建议壁厚</td><td class="mono">1.6 mm</td><td>树脂件</td></tr>
+      <tr><td>外形包络</td><td class="mono">约 Φ27 × 17 mm</td><td>加挂环总长约 38mm</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="flag"><b>13.45mm 是评测实测值不是官方图纸，打印前用卡尺自己复核一次。</b>但这已经足够起草第一版，不构成开工前置阻塞。</div>
+
+  <h3 style="font-size:15px;margin:28px 0 10px">禁止遮挡清单</h3>
+  <p style="font-size:13.5px;color:var(--ink-2);margin:0 0 14px">官方说明书产品概览的 7 个编号部件，等于外壳的红线。说明书第 3 页原文：「将麦克风固定在衣物上时，请确保<b>麦克风正面朝外</b>，以获得最佳的收音效果。」</p>
+  <div class="nolist">
+    <div class="no-item"><span class="m">正面</span><span><b>必须敞开或只覆开孔透声网。</b>正面是双麦孔 + 指示灯所在面。全包裹毛绒套若覆盖正面，直接违反官方拾音条件</span></div>
+    <div class="no-item"><span class="m">一侧</span><span><b>录音键开通孔</b>，不做薄壁软按压区——按键高度差本身是状态指示，盖住就废了</span></div>
+    <div class="no-item"><span class="m">另侧</span><span>充电触点 + 蜂鸣器<b>必须开孔</b></span></div>
+    <div class="no-item"><span class="m">背面</span><span><b>完全开放</b>，直接露出磁吸片与柔性绑带接口</span></div>
+    <div class="no-item"><span class="m">敲击</span><span>必须留<b>可直接敲到本体的硬质区域</b>，否则厚壁或毛绒吸收冲量，双击打标失效</span></div>
+    <div class="no-item"><span class="m">材质</span><span><b>不能含导电成分。</b>豆体内有独立 Wi-Fi 芯片。不要用碳纤维填充线材、金属漆，不要在天线区堆磁铁。PLA/PETG/TPU/树脂安全</span></div>
+  </div>
+
+  <h3 style="font-size:15px;margin:28px 0 10px">造型语言与佩戴</h3>
+  <div class="scroll">
+  <table>
+    <tbody>
+      <tr><td style="width:120px"><b>造型方向</b></td><td>走 <b>ugly-cute（怪可爱）</b>不走萌可爱，避开小熊小兔这类幼儿园符号——9–13 岁最在意「显得幼稚」。<b>具体建议：一颗有眼睛的豆子。</b>正面双麦孔的位置天然就是两只眼睛的位置，指示灯做成第三个点或眼睛高光。<b>录音时眼睛亮起橙色呼吸光——把合规指示做成造型的第一记忆点。</b></td></tr>
+      <tr><td><b>导光环</b></td><td>在指示灯位置做一圈导光环放大橙色光斑。这是<b>反向补偿</b>——实测原生指示灯「亮度低、不显眼」，而「被录人知情」这条红线恰恰靠这盏灯撑着。<b>把它做亮，既是合规动作也是设计动作。</b>灯的行为规则抄 Limitless：亮度可调低，不可关闭。</td></tr>
+      <tr><td><b>配色</b></td><td>两套 SKU 并排展示。<b>9–11 岁</b>：哑光奶油白 + 单一橙色点缀（橙色正好与录音指示灯同色，功能与装饰统一）。<b>12–13 岁</b>：哑光炭灰 / 白，几何化，无角色特征。</td></tr>
+      <tr><td><b>材质</b></td><td>外观壳体 / 角色件 / 透光灯罩用 <b>SLA 树脂</b>（出机即半哑光、无可见层线）；夹具、卡扣、内部支架用 <b>FDM PETG</b>；软套用 <b>TPU 95A</b>（85A 太软，需近端直驱、不能走 PTFE 管）。</td></tr>
+      <tr style="background:var(--hold-soft)"><td><b>佩戴</b></td><td><b>反对亮眼的书包外挂件</b>——越亮眼越是盗窃标靶，且 2025–26 的「叠挂」潮流意味着麦克风会被 3–5 个其他挂件遮住。<b>主推：书包肩带内侧靠胸位置的短挂绳 / 扣具。</b>正面朝外满足拾音条件，位置固定减少摩擦噪音，不外露减少被抢，同时指示灯对面对面的人仍可见。领夹式实测「厚一点的衣领都夹不上去」，厚校服基本不可用。<br><b>叙事陷阱：</b>有评测把「塞到衣服里很隐蔽」当优点——挂绳形态可以用，<b>但绝不能塞进衣服里</b>，那与整个合规方向相反。</td></tr>
+      <tr><td><b>磁吸</b></td><td>2–3 颗小磁铁 + 0.4–0.8mm 塑料壁气隙做吸力衰减（单颗 Φ8×3mm N52 吸力约 1.76kg，对这个用途严重过剩）。目标是「单手能拔下但书包甩动不掉」，<b>打多版实测，不要算</b>。<b>磁铁必须完全封闭在壳体内且不可分离</b>——盲孔 + 结构胶，不做可拆卡扣。儿童吞食高强磁铁是致死致伤风险。</td></tr>
+      <tr><td><b>毛绒</b></td><td><b>可以做，但只做可选配件，不做主推。</b>声学上毛绒本身不是禁忌（它就是防风罩，毛皮罩降风噪超过 25dB），但必须是<b>开放式长绒、无底布、麦克风正对区完全不覆盖</b>。不做主推是因为它同时踩三条：遮麦克风、遮指示灯、吸收敲击冲量——<b>而这三条恰好是本方案的三根支柱。</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">05</span><h2>路演：不演霸凌，演「说不出口」</h2></div>
+  <div class="flag stop" style="margin-top:0"><b>素材伦理硬规则（写进 PPT，全程屏幕水印）：</b>所有演示音频由成年演员在书面知情同意下录制；不使用任何真实儿童音频；不重演具体霸凌行为。<b>这句话本身就是加分项</b>——它证明团队理解自己在处理什么。</div>
+  <div class="shots" style="margin-top:20px">
+    <div class="shot"><div class="t">30 秒</div><div><div class="h">不放冲击画面，放沉默</div><div class="d">一条空走廊。<div class="quote">44.2%——这是美国全国调查里，被霸凌后告诉过成年人的学生比例。中国的一份调查里，近五成孩子从未求助过。<br>我们不是来抓坏人的。我们是来让一个孩子少说一句话就能求助。</div></div></div></div>
+    <div class="shot peak"><div class="t">60 秒</div><div><div class="h">硬件实证 —— 全场最该演的一段</div><div class="d">现场三个人正常说话。演示者按下侧面录音键 → <b>橙灯亮</b> → 转向全场说「现在正在录音」。<b>这一步本身就是论证：知情不是 App 里的一行小字，是一个人人都能看见的物理动作。</b><br>紧接着做<b>对抗性演示</b>：套上毛绒套 → 灯还看得见吗？麦克风还听得清吗？并排展示三段波形与转写准确率（裸豆 / 全包套 / 开孔套）。<b>主动展示自己的约束，比等评委问出来强十倍。</b></div></div></div>
+    <div class="shot"><div class="t">90 秒</div><div><div class="h">闭环 —— 命题的得分点</div><div class="d">导入知情同意录制的素材 → App 里<b>孩子自己勾选</b>要交出去的片段（强调控制权归属）→ agent 产出一页事实陈述 → 屏幕上出现一个可以发给班主任的东西。<br>同时讲清接收端：<b>我们不是在建一条新渠道，我们是在给一条已经建好的渠道供料。</b></div></div></div>
+    <div class="shot"><div class="t">45 秒</div><div><div class="h">模式聚合</div><div class="d">三次按压在两周内的分布图，同一时段、同一地点。<div class="quote">单条录音不是证据，模式才是。</div></div></div></div>
+    <div class="shot"><div class="t">30 秒</div><div><div class="h">主动说边界（不要省掉这一段）</div><div class="d">念出来：不做自动识别（附上 46%／34%／565 次误报那组数字）；不做声纹识别；音频不上云直到孩子勾选；<b>灯不能关</b>。</div></div></div>
+  </div>
+  <div class="flag"><b>演示工程预案：</b>设备一次只接受一个 BLE 连接、自研 App 与飞书 App 互斥——这条未经独立核实，但成本极低风险极高，<b>按它成立来准备</b>：自研 App 全程跑通，飞书实时转写用录屏呈现，现场绝不切换连接。</div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">06</span><h2>评委会问的五个问题</h2></div>
+  <div class="qa">
+    <div class="qi"><div class="q"><span>Q1</span>这不就是窃听器材吗？</div><div class="a">72 号令第三条的两个构成要件是「以伪装或隐蔽方式使用」和「无明显提示」。<b>我们把这两个都反着做</b>：外观第一眼看得出是录音设备，橙色指示灯不可关闭且我们主动加了导光环放大它，只有孩子按下才录，按下时有震动确认。<br><br>我们最初的设想恰恰是被判过的那个形态——上海奉贤林某案，卡通钥匙扣外壳，判九个月并处罚金 3 万，判决中「卖给家长看孩子」的目的未被采纳为出罪理由。<b>我们主动删掉了它。</b></div><div class="note">再补一句更硬的：伪装不是帮孩子取证，是毁掉孩子的证据——民诉法解释第 106 条。</div></div>
+    <div class="qi"><div class="q"><span>Q2</span>误报率多少？</div><div class="a"><b>0，因为我们不做自动判定。判定入口只有一个：孩子的手指。</b><br><br>这不是回避，是基于公开实测的设计决策。ProPublica 2019 对同类校园声学检测系统实测：攻击性尖叫检出 30/65（46%），非攻击性尖叫也触发 17/50（34%）；约两小时群体录音产生 <b>565 次误报</b>（尖叫 402、大声讨论 75、笑 43、欢呼 42）。学术侧最强结果（VGGish + 梯度提升，尖叫仅占 1.3% 的真实非平衡流）AUC 0.95 但 <b>AP 仅 0.42</b>。<br><br>而我们要区分的正是「打闹尖叫」和「霸凌尖叫」——恰好是 46% 对 34% 那一格，接近抛硬币。</div><div class="note">厂商自称的「&lt;0.5% 误报」不能拿来反驳：那是室外全城枪声定位数据，场景不可比。</div></div>
+    <div class="qi"><div class="q"><span>Q3</span>录到了别的孩子的声音怎么办？</div><div class="a"><b>这是我们方案里最难的一处，我们不假装解决了。</b><br><br>被录到的孩子多数不满 14 周岁，其语音同时是「个人生物识别信息」和「不满十四周岁未成年人的个人信息」，都属敏感个人信息（个保法第 28 条），处理需监护人单独同意（第 29、31 条），事前需做影响评估（第 55 条）。现实中拿不到。<br><br>我们的处理是把暴露面压到最小：不做声纹、音频不出设备直到孩子勾选、只留极短片段、转写后原音频删除。法律基础是第 13 条第（四）项。<b>我们也主动说明：第 29 条单独同意与第 13 条其他合法性基础的关系目前没有权威口径——这是整个方案里唯一一处没有确定答案的地方。</b></div></div>
+    <div class="qi"><div class="q"><span>Q4</span>学校会让带进去吗？</div><div class="a">这是准入前提不是加分项，<b>我们放在主线不放附录</b>。最不利的对照是 Jiobit 能进美国校园，恰恰因为它<b>没有麦克风、没有扬声器</b>——我们正视这一条。<br><br>① 教育部教基厅函〔2021〕3 号管的是学生个人手机，我们不是手机，但不拿这个当挡箭牌。② 我们主动提供<b>「校内时段」开关，并把控制权交给学校</b>——学校可要求在校时段默认禁用录制，这是美国学区对带听音功能学生设备的标准处置，我们照抄。③ 我们的价值接收方就是学校自己的欺凌治理委员会，<b>我们做的是供料，不是绕过。</b></div></div>
+    <div class="qi"><div class="q"><span>Q5</span>为什么不做成儿童手表上的一个 App？</div><div class="a"><b>诚实回答：如果只看进校便利，我们应该做手表 App</b>——手表已是学校默认接受的形态。<br><br>选独立硬件只有一个理由：<b>手表已经变成社交与攀比的载体。</b>碰一碰加好友、点赞、等级机制已嵌入日常互动，已出现代养号、刷赞、账号交易，超七成受访家长提到「圈子壁垒」。<b>把求助功能放进一个正在制造社会等级的设备里，会让求助行为本身被围观。</b>所以我们刻意不做任何互相识别、加好友、等级展示、限量款——这是战略级的不做。<br><br>如果评委认为理由不足，我们的功能层可整体移植到手表形态，硬件不是必要条件。</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">07</span><h2>代价与选择</h2></div>
+  <p class="lede">五条真实代价，一条都别藏。</p>
+  <div class="nolist">
+    <div class="no-item"><span class="m">01</span><span><b>PPT 有相当篇幅在讲「我们不做什么」。</b>合规防守是必需的，但挤占正面价值的展示空间。缓解：把不做清单压成一页，主体给功能三</span></div>
+    <div class="no-item"><span class="m">02</span><span><b>最有冲击力的东西恰恰不能演。</b>真实霸凌不能演，儿童音频不能用，只能靠成年演员 + 知情同意水印，情绪强度天然被压</span></div>
+    <div class="no-item"><span class="m">03</span><span><b>「落地可行性」这栏天然扣分。</b>上市路径没有干净答案：GB 46859-2025 适用范围是「手表」，挂件不在字面范围内；学校准入靠自愿；被录第三方的同意问题无解只能最小化</span></div>
+    <div class="no-item"><span class="m">04</span><span><b>团队自身承担刑法 283 条的生产侧风险。</b>合规设计后风险很低，但批量打印、路演展示、赛后分发这条链条必须写进风险页，<b>赛后不要向任何不特定对象分发实体件</b></span></div>
+    <div class="no-item"><span class="m">05</span><span><b>24 小时的技术展示面变窄。</b>不做 AI 声学识别意味着硬核算法展示没有了，剩下 App 交互 + agent 编排，硬件差异化只剩外观件与结构</span></div>
+  </div>
+
+  <div class="flag go" style="margin-top:20px"><b>选择建议：</b>如果团队的核心优势是 3D 打印 + Blender + 三维扫描（外观与结构），且愿意接受用一页篇幅做合规防守——<b>选防霸凌</b>。因为这个方向的胜负手恰好在外观形态上（品类明显、指示灯放大、可换配件生态），<b>团队能力和方向需求是对齐的</b>。<br><br>如果想把 24 小时全部投在功能闭环和技术展示上，选听诊器方向，防霸凌会持续消耗注意力在防守上。</div>
+
+  <div class="flag" style="border-color:var(--key); background:var(--key-soft)"><b>还有一个中间选项值得认真考虑：</b>保留防霸凌的形态与合规设计，但把<b>预赛文档的叙事重心</b>从「防霸凌硬件」移到「把孩子说不清的事变成能交出去的事实陈述」这个 agent 闭环上。这样合规防守只占一页，主体是正面价值，且直接对准评分导向原话。<b>形态不变，叙事重心变，风险显著下降。</b></div>
+
+  <div class="flag go"><b>叙事主轴建议用这一条：</b>湖南省双亲留守儿童研究（1506 人，Olweus 问卷）显示受欺凌检出率 20.39%，其中<b>言语欺凌 17.60% 是最常见类型</b>——而言语欺凌正好落在录音能覆盖的那一半里。这是全部调研中唯一一条既逐字核实、又与硬件能力精确咬合的证据。</div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">08</span><h2>今天就能做的三件事</h2></div>
+  <div class="today">
+    <div class="td">
+      <div class="w">约 2 小时建模 + 打印</div>
+      <h3>第一版托座，三个包裹度一次打完</h3>
+      <ul>
+        <li><b>A｜仅圈边</b>：只做正面导光圈 + 背面托座，最大限度不遮挡</li>
+        <li><b>B｜半包</b>：侧面包到按键孔与触点孔为止，正面开口 Φ18</li>
+        <li><b>C｜全包</b>：只在双麦、指示灯、按键、触点处开孔</li>
+      </ul>
+      <p style="margin-top:8px">开孔：正面 Φ18 完全露出双麦与指示灯区；侧面录音键位开约 6×4mm 通孔并倒角；另一侧触点开 5mm 圆孔；背面完全开放。<b>麦克风开孔不要做「长通道 + 腔体」，不要靠壳体缝隙漏声</b>（避免亥姆霍兹共振）——具体毫米数当经验值用，不要写进 PPT 当引用数据。</p>
+    </div>
+    <div class="td">
+      <div class="w">约 1 小时</div>
+      <h3>录一组「戴套 vs 不戴套」对比音频</h3>
+      <p>今天能产出的<b>最便宜也最有说服力的演示素材</b>，同时是团队自己的工程决策依据。同一段朗读文本，固定 <b>3 米</b>距离（不要用官方标称的 5 米——实测 3 米外声音已经偏小），分别录：裸豆 / 全包毛绒套 / 麦克风正对处开孔的毛绒套。输出三段波形并排 + 三份转写准确率对比。</p>
+      <p style="margin-top:7px">这同时回答两个问题：「毛茸茸到底能不能做」和「你们真的测过吗」。<b>顺手把指示灯在室内、走廊、户外阳光下的可见度拍一组</b>——这是「被录人知情」红线的直接证据，也是导光环设计的依据。</p>
+    </div>
+    <div class="td">
+      <div class="w">约 1 小时</div>
+      <h3>把「不做清单」写死成一页纸</h3>
+      <p><b>这一页在预赛文档里的价值大于任何功能页</b>，因为主办方红线就写在这里，评委的第一个问题也在这里。</p>
+      <p style="margin-top:7px">不做隐蔽外观 · 不做自动/常开录音 · 不做声纹与说话人识别 · 不做家长远程监听 · 不做当场可被施暴者察觉的告警 · 不做互相识别/加好友/等级/限量款 · 指示灯亮度可调但不可关闭 · 音频不上云直到孩子勾选</p>
+    </div>
+  </div>
+
+  <div class="flag stop" style="margin-top:20px"><b>今天顺手修掉这四处引用瑕疵，否则会在评委席上被抓：</b>
+  ① 删掉《未成年人网络保护条例》第 37 条这个条号——生效版第 37 条实为「每年合规审计并报网信部门」，团队材料里那段文字来自 2022 年征求意见稿。只引个保法 28/29/31/55 条。
+  ② 不要引用「单次霸凌事件平均 38 秒」——该数字在给出来源里不存在。方向已改为主动触发，正好不需要它。
+  ③ 不要把 ASTM F963 的 22.2N 易断扣写成强制合规线——那是 18 个月以下婴幼儿玩具条款。
+  ④ 不要引用「小天才市场份额超 60%」（同一来源给的是线上渠道 53.7%）。</div>
+
+  <div class="flag"><b>今天就发出去的一封邮件</b>——给赛事技术支持，9/27 前必须拿到答案的三个问题：<br>
+  ① SDK 是否有<b>按键/敲击事件的上行回调</b>？（整个「孩子按下 → App 侧感知」链路依赖这一条）<br>
+  ② 是否有<b>音频分片/边录边传的回调</b>？（9/9 纪要称支持，与公开 SDK 能力清单矛盾）<br>
+  ③ 设备是否<b>只接受单一 BLE 连接</b>？（无论答案如何，先按「是」准备演示预案）<br><br>
+  前两问的答案决定功能一的实现方式。<b>在拿到答案前，功能设计一律按最保守的「本地录制、事后回传」来做</b>——这条路径完全落在已确认的设备能力上，零风险。</div>
+</section>
+
+<footer>
+  调研方法：13 个 agent 并行，六个角度（法律合规 / 儿童硬件产品史 / 9–13 岁外观语言 / 物理参数与配件生态 / 触发式录音实现 / 霸凌场景真实特征），每个角度产出后接一轮独立事实核查（默认怀疑，编造即剔除）。125 条结论保留，1 条剔除。<br><br>
+  <b>本文档中的法律分析不构成法律意见。</b>涉及刑事风险的条款与判例已尽力核实到具体案号或权威发布，但团队在批量制作、展示、分发实体件前应自行确认。涉及儿童福祉的结论均按「宁可标注不确定，不为让方案好看而淡化风险」处理。
+</footer>
+
+</div>
