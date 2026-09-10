@@ -154,8 +154,9 @@ footer{margin-top:64px; padding-top:20px; border-top:1px solid var(--rule); font
 
 <div class="verdict">
   <div class="hd">
-    <div class="lab">判定</div>
-    <h2>能做。但团队现在设想的那个东西不能做。</h2>
+    <div class="lab">判定 · 2026-09-10 第二轮核查后更新</div>
+    <h2>方向成立，但价值大幅缩水。建议降级为备选。</h2>
+    <p style="margin:10px 0 0;font-size:14px;color:var(--ink-2)">第一轮结论「能做，但要删两样」仍然有效。第二轮针对团队质疑「被霸凌的人不可能会按」做了实证核查（7 个 agent，三个角度），结论是：<b>事中按不了是对的</b>；主动触发只剩「事前例行开启」和「事后私密标记」两个窗口；前者覆盖受害者约 11–19%，后者不需要录音硬件。产品从「防霸凌求助工具」缩成「慢性受害者在教室外固定热点的取证器 + 事后语音日记」。详见第 00 节。</p>
   </div>
   <div class="cuts">
     <div class="cut">
@@ -170,6 +171,68 @@ footer{margin-top:64px; padding-top:20px; border-top:1px solid var(--rule); font
     </div>
   </div>
 </div>
+
+<section>
+  <div class="sh"><span class="n">00</span><h2>「被霸凌的人不可能会按」——实证核查</h2></div>
+  <p class="lede">团队成员的质疑。三个角度并行查证：受害者在事件当下的行为能力、长期霸凌的时空可预测性、亮灯设备在现场的净效应。结论：<b>质疑击中的是「按钮式事中求救」这个具体形态，不是「主动触发」本身——但剩下的窗口很窄。</b></p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th style="width:70px">时段</th><th style="width:150px">能做什么</th><th>做不了什么</th><th style="width:150px">触发可行性</th></tr></thead>
+    <tbody>
+      <tr><td><b>事前</b><br><span class="mono" style="font-size:11px;color:var(--ink-3)">分钟级</span></td><td>全部动作能力。1/5 受害者已具体到回避某地点（NCES 2024）</td><td>预判不了「这一次会不会发生」——日间波动占方差 2/3</td><td style="background:var(--hold-soft)"><b>可行</b>，但必须是铃声级例行动作，不能靠「感觉要出事」</td></tr>
+      <tr><td><b>事中</b><br><span class="mono" style="font-size:11px;color:var(--ink-3)">38 秒</span></td><td>一般 freeze 下：隔衣敲击这种小幅动作在运动学上可行（<b>成人证据</b>）；文献里受害者是哭、反击、装无所谓——有反应，不是石化</td><td>决策 + 定位 + 按压 + 承受亮灯的社会代价。肢体压制场景下强直性不动（TI），什么都做不了</td><td style="background:var(--stop-soft)"><b>按钮不可行。</b>隐蔽敲击理论可行、无儿童实证</td></tr>
+      <tr><td><b>事后</b><br><span class="mono" style="font-size:11px;color:var(--ink-3)">分钟→周末</span></td><td>运动与认知能力完全恢复</td><td>愿意：43.8% 谁都不说；匿名举报有 11.6% 拖到周末</td><td style="background:var(--go-soft)"><b>能力 ≈100%，意愿是全部瓶颈。</b>「私下按一下」门槛低于「告诉老师」，但没有任何数据</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="flag stop"><b>事中触发比团队说的还糟：</b>单次事件均值 38 秒（Craig &amp; Pepler 1998 操场观察），没有决策余量；被按住场景诱发强直性不动，任何动作都做不了；当着施暴者按一个会亮灯的东西是把设备递给对方。真实按下率的三组类比全部难看：<b>高风险家暴成人 6 个月内 74% 从未按过</b>（Hodgkinson 2023）、90 岁以上跌倒者 80% 没按、急诊医护根本不戴。<br><br>但「不可能」把两种冻结混成了一种。一般 freeze 是肌张力高、准备行动的状态，通常只持续几秒（Kozlowska 2015）；实验里 freeze 越强按键反而越快（Hashemi 2019）。<b>注意：这两条都是成人样本，校园霸凌当下 TI 的比例是真实的实证空白。</b></div>
+
+  <h3 style="font-size:15px;margin:28px 0 10px">事前例行开启的覆盖率</h3>
+  <p style="font-size:13.5px;color:var(--ink-2);margin:0 0 12px">三个乘数，前两个有数据，第三个是估计：</p>
+  <div class="scroll">
+  <table>
+    <tbody>
+      <tr><td style="width:60%">一年内 ≥3 天重复受害（慢性受害者）</td><td class="mono"><b>≈50%</b></td><td style="font-size:12px;color:var(--ink-3)">NCES 2024</td></tr>
+      <tr><td>有教室外固定热点模式（被压制型 + 走廊型 + 全域型）</td><td class="mono"><b>≈55%</b></td><td style="font-size:12px;color:var(--ink-3)">潜类别分析。教室专属型 16.7% 与边缘型 29.3% 基本排除</td></tr>
+      <tr><td>会把开启变成例行动作</td><td class="mono"><b>40–70%</b></td><td style="font-size:12px;color:var(--ink-3)"><b>无数据。</b>负面参照：急诊医护不佩戴、PERS 24% 从不佩戴</td></tr>
+      <tr style="background:var(--hold-soft)"><td><b>→ 受害者中能被录到的比例</b></td><td class="mono"><b>11–19%</b></td><td style="font-size:12px;color:var(--ink-3)">再乘热点内事件占比，「所有霸凌事件被录到」在个位数到 15% 之间</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:15px;margin:28px 0 10px">亮灯设备在现场：威慑最不可能，激怒 / 被抢更可能</h3>
+  <div class="scroll">
+  <table>
+    <tbody>
+      <tr><td style="width:90px"><b>威慑</b></td><td><b>零证据。</b>850 校两波纵向研究，摄像头对犯罪、报警、惩戒全部零效应（Fisher 2021）；NCVS 数据里摄像头/保安/证件都与霸凌减少无关，<b>唯一有效的是走廊里有成人（−26%）</b>。执法记录仪文献最稳健的结论：摄像头改变的是佩戴者，不是对面的人。青少年霸凌是面向同伴观众的地位表演，现场已经有一个比灯更强的观众。</td></tr>
+      <tr style="background:var(--stop-soft)"><td><b>激怒</b></td><td><b>有证据，条件是「中途开启」。</b>警员可自行开关记录仪时使用武力 +71%，全程开启时 −37%（Ariel 2016）。直接映射到本设备：<b>事中按下侧键、灯突然亮起，是文献里最危险的动作。</b></td></tr>
+      <tr><td><b>被抢</b></td><td>有实务警告，无系统数据。日本侦探事务所把「录音笔被发现 → 被破坏 → 霸凌恶化」写成标准警告，行业做法是缝暗袋——<b>一线从业者把可见视为风险而非资产。</b></td></tr>
+      <tr style="background:var(--go-soft)"><td><b>旁观者</b></td><td><b>唯一正向通道。</b>摄像头在场使旁观者介入率 15% → 45%（van Bommel 2014，成人实验室）；同伴介入 57% 在 10 秒内让霸凌停止（Hawkins 2001，小学操场）。88% 的霸凌事件有同伴在场，19% 会干预。<b>但未在目标场景验证。</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="flag"><b>对设计的三条硬含义：</b>① 绝不设计「事中亮灯」的交互路径——灯只在事前例行开启时亮，全程亮，永不中途启动。② <b>法律要求「可察觉」，安全要求「不显眼」，这是真实矛盾，不要假装没有。</b>③ 假设设备一定会被抢——证据必须即时离开设备，被抢后录音已在别处。</div>
+
+  <h3 style="font-size:15px;margin:28px 0 10px">这对录音豆的必要性意味着什么</h3>
+  <p style="font-size:13.5px;color:var(--ink-2);margin:0 0 10px">诚实回答：<b>如果主要价值变成「标记时刻 + 事后自述」，一个不带录音的按钮就够了，甚至不需要硬件</b>——手机 app、电话手表、纸质日记都能做。录音功能剩下的不可替代价值只有两项：事前例行开启时录到事件本身（完全依赖那个 11–19%）；旁观者问责需要真的在录。</p>
+  <div class="flag go"><b>但调研顺手挖出了硬件真正的合法性，比「10g 磁吸」重要得多：</b>9–13 岁目标人群<b>在校期间通常不允许带手机</b>（中国小学普遍禁止），所以「用手机做」在目标场景里不成立。如果要保留这个方向，叙事重心应从「按下去求助」移到<b>「上课不能带手机的孩子，在固定热点有一个自动留证的东西」</b>。</div>
+
+  <h3 style="font-size:15px;margin:28px 0 10px">方向判断：(b) 成立但价值大幅缩水，降级为备选</h3>
+  <div class="scroll">
+  <table>
+    <tbody>
+      <tr><td style="width:130px"><b>为什么不是 (c) 放弃</b></td><td>「事前例行」的实证链没有断——慢性受害者约 4 成、施暴者人群稳定、热点集中且学生能标出，每一环都有真实来源。</td></tr>
+      <tr><td><b>为什么不是 (a) 继续主线</b></td><td>产品从「防霸凌求助工具」缩成「已知慢性受害者在教室外固定热点的取证器 + 事后语音日记」。「求助」这个词已经不成立：事中不能求，事后求的是日记。三个最大风险——时间转移、佩戴率、被抢——文献都回答不了，只能小规模试点。<b>一个核心交互建立在「文献零证据、类比证据为负、需试点才知」上的方案，不应该做主线。</b></td></tr>
+      <tr style="background:var(--go-soft)"><td><b>什么会翻回 (a)</b></td><td>试点里慢性受害者的例行开启率 &gt;50% 且持续 4 周以上；亮灯后热点事件没有明显转移到关机时段；佩戴率 &gt;60%。<b>三个都是可以在黑客松后 4–6 周内用 20 个家庭测出来的数字</b>——但不是 9/27 之前。</td></tr>
+      <tr style="background:var(--stop-soft)"><td><b>什么会推到 (c)</b></td><td>学校/家长不接受每天录一群无关同学；佩戴率 &lt;30%；或试点里出现一次「因为灯被盯上」的事件。</td></tr>
+      <tr><td><b>如果一定要留一条主线</b></td><td>证据指向的不是「受害者按」，而是<b>旁观者 / 小组佩戴 + 证据即时离开设备</b>——本次核查里唯一方向为正、机制清楚的通道。但它也只有成人实验室和小学操场证据。</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
 
 <section>
   <div class="sh"><span class="n">01</span><h2>为什么不能做隐蔽外观</h2></div>
