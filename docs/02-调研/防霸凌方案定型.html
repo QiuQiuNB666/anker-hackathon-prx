@@ -279,7 +279,7 @@ footer{margin-top:64px; padding-top:20px; border-top:1px solid var(--rule); font
   </div>
   <div class="flag go" style="margin-top:16px"><b>路演可以这么说：</b>安克把这个产品做成只能主动录音，恰好把我们唯一合法的形态硬编码进了硬件。<b>这是竞品无法用软件绕过的护城河。</b></div>
 
-  <div class="flag stop" style="margin-top:16px"><b>⚠ 一处必须纠正的产品事实（我此前说错了）：</b>录音键是<b>侧面按键「单击」控制录制起停</b>；<b>敲击豆体「双击」是录制中打标记</b>（飞书官方：录音中轻点两下麦克风可快速标记重点，震动确认）。这是两个不同动作，「双击求助」把两者混成了一件事，写进文档会被熟悉产品的评委当场问穿。<br><br>另外：SDK 的 README 里只有绑定异常回调和 OTA 回调，<b>没有任何按键/敲击事件的上行回调</b>——「按下 → 家长手机实时告警」在公开文档上无依据，9/27 前必须向官方确认。<b>在拿到答案前，功能设计一律按最保守的「本地录制、事后回传」来做。</b></div>
+  <div class="flag stop" style="margin-top:16px"><b>⚠ 一处必须纠正的产品事实（我此前说错了）：</b>录音键是<b>侧面按键「单击」控制录制起停</b>；<b>敲击豆体「双击」是录制中打标记</b>（飞书官方：录音中轻点两下麦克风可快速标记重点，震动确认）。这是两个不同动作，「双击求助」把两者混成了一件事，写进文档会被熟悉产品的评委当场问穿。<br><br>另外：9/11 从 SDK Demo 代码核实——<code>onAudioRecordStatusChanged(status, recordingDuration, fileID)</code> 会在设备侧按键起停时回调，<code>onReceiveAudioFragment</code> 的 <code>isMark</code> 标志对应敲击打标。<b>「按下 → App 侧感知」链路在 SDK 层是通的</b>，此前「无依据」的判断基于 README，已修正。但注意：这不改变本节结论——事中按不了是行为层的问题，不是 SDK 层的。</div>
 </section>
 
 <section>

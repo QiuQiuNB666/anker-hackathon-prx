@@ -171,7 +171,7 @@ footer a{color:var(--steel)}
   <div class="kills">
     <div class="kill" style="border-color:var(--gap); background:var(--gap-soft)"><span class="ic" style="color:var(--gap)">✓</span><div><b>官方划了一条红线，而听诊器天然在线外</b><span>命题核心要求原文：<b>「所有场景必须确保被录人知情，禁止偷录、窃听类违规场景」</b>。做「听人说话」的队伍全部要处理知情同意——持续监听情绪、录销售对话尤其棘手。<b>听机器不涉及任何人的隐私，这从合规约束变成了你的护城河，路演里值得主动点出来。</b></span></div></div>
     <div class="kill" style="border-color:var(--gap); background:var(--gap-soft)"><span class="ic" style="color:var(--gap)">✓</span><div><b>官方亲口否定了做纪要</b><span>评分导向原文：<b>「优先考察场景与硬件的结合度、场景价值，可探索将音频作为 AI agent 输入实现任务闭环，而非仅转为静态文档」</b>。「而非仅转为静态文档」是主办方自己说的——红海判断不再是推测。</span></div></div>
-    <div class="kill" style="border-color:var(--warn); background:var(--warn-soft)"><span class="ic" style="color:var(--warn)">⚠</span><div><b>SDK 可能支持「边录边传」<span style="font-family:'JetBrains Mono',monospace;font-size:10px">存疑</span></b><span>纪要原文：录音豆「开放 iOS 与安卓端 SDK，<b>支持离线与边录边传模式</b>」。这与公开 SDK 仓库里「无实时音频流」的能力清单矛盾。若边录边传属实，分段拉取的 5–15 秒延迟约束就不成立了，路演可以承诺更快的响应。<b>第二场直播或拿到 SDK 后第一件事就是确认这条。</b></span></div></div>
+    <div class="kill" style="border-color:var(--gap); background:var(--gap-soft)"><span class="ic" style="color:var(--gap)">✓</span><div><b>「边录边传」已确认——从 SDK Demo 代码核实</b><span>9/11 clone 了 <code>AnkerInnovations/SoundcoreSDKDemo</code>，README 没写但 Android/iOS Demo 都实现了 <code>acquireRealtimeAudioData</code> + <code>onReceiveAudioFragment</code>。纪要说的是对的，我此前基于 README 的判断是错的。详见第 01 节硬约束 02/03。</span></div></div>
     <div class="kill" style="border-color:var(--kill)"><span class="ic">⚠</span><div><b>路演时长可能被砍半<span style="font-family:'JetBrains Mono',monospace;font-size:10px">存疑</span></b><span>纪要写<b>「3 分钟演示 + 2 分钟问答」</b>，而官方《赛事细则》文档白纸黑字是「6 分钟演示 + 3 分钟问答，严格计时」。两者冲突。若真是 3+2，下面第 04 节的分镜要整体压缩一半，<b>「制造故障」那 60 秒必须保住，其余全砍</b>。这条务必在群里问清楚。</span></div></div>
   </div>
   <div class="flag" style="border-color:var(--steel); background:var(--steel-soft)"><b>入围队伍的配套资源（此前未知）：</b>AWS 全量云资源、AI 编程工具、大模型调用额度，以及对应赛道的硬件 SDK 与开发环境指南。<b>另外官方承诺：所有赛事资料、直播回放、赛道老师分享材料都会同步到选手中心</b>——包括一份含 API/SDK 接入信息、评分标准、设计案例的 PPT（纪要待办项，讲师 Terry Lee）。那份 PPT 是目前最值得等的东西。</div>
@@ -182,8 +182,8 @@ footer a{color:var(--steel)}
   <p class="lede">这批事实来自官方产品页、52audio 拆解、官方 SDK 仓库和社区逆向文档。每一条都能直接杀死一类想法——在动笔写方案之前先过一遍，比任何创意都省时间。</p>
   <div class="kills">
     <div class="kill"><span class="ic">01</span><div><b>一次只接受一个 BLE 连接</b><span>官方 App 连着的时候你的 App 连不上，反之亦然。<b>「我的 App 做联动、官方 App 做转写」这类方案当场出局。</b>（注意这是设备端限制，手机同时连打印机、ESP32 没问题。）</span></div></div>
-    <div class="kill"><span class="ic">02</span><div><b>官方 SDK 没有实时音频流，也没有重点标记事件</b><span>公开能力清单只有六组：扫描连接 / 录音与文件传输 / 设备控制 / 绑定 / OTA / 设备日志。想做实时响应，只能设计成「短周期启停录音 → 分段拉取」，一轮约 5–15 秒。<b>路演别承诺秒级，说「10 秒内」你做得到且没人挑剔。</b></span></div></div>
-    <div class="kill"><span class="ic">03</span><div><b>「重点标记」是最大未知项</b><span>产品页确认双击标记存在（带震动反馈），但社区逆向文档和官方 SDK README 两个独立来源都不含 mark 事件。它是实时回调、还是写进文件元数据、还是走云侧——完全未知。<b>任何方案都要为两种情况各准备一条路径。</b></span></div></div>
+    <div class="kill" style="border-color:var(--gap); background:var(--gap-soft)"><span class="ic" style="color:var(--gap)">02</span><div><b>官方 SDK 有实时音频流——此前结论错误，已修正</b><span>README 的六组能力清单没写，但 Demo 代码里有：<code>acquireRealtimeAudioData(mac, uuid, savePath)</code> 启动边录边传，分片通过 <code>onReceiveAudioFragment(fileID, audioData, isAppendPreAudio, sequenceNumber, isMark)</code> 回调，Opus 编码 16kHz 双声道 20ms 帧。iOS Demo 注释原文：「recording while transferring」。<b>分段拉取的 5–15 秒约束不成立了，听诊器可以做近实时检测。</b>流程：设备侧按键开录 → 设备发 <code>COMMAND_ID_TRANSPORTING_WITH_RECORD</code> 通知 → App 调 acquire。</span></div></div>
+    <div class="kill" style="border-color:var(--gap); background:var(--gap-soft)"><span class="ic" style="color:var(--gap)">03</span><div><b>「重点标记」两条路都有——已确认</b><span>实时路径：<code>onReceiveAudioFragment</code> 每个分片带 <code>isMark: Boolean</code>，双击时对应分片标 true。文件路径：<code>onDecodeFileMarkers(fileID, markerTimes: IntArray)</code> 解码后回传全部标记时间点。<b>听诊器的「双击 = 在线学习标注按钮」在实时链路上直接成立。</b></span></div></div>
     <div class="kill"><span class="ic">04</span><div><b>只有 2 颗 MEMS 麦克风，5 米拾音</b><span>声源定位、方向判断、左右分离——硬件上做不到，别写进方案。</span></div></div>
     <div class="kill"><span class="ic">05</span><div><b>不支持 USB 导出音频</b><span>所有音频只能走 BLE / SPP / Wi-Fi SoftAP 三条协议通道。而且 SoftAP 快传期间手机会切到设备热点、断开互联网——<b>演示流程里绝不能出现「快传的同时调云端 LLM」</b>，这个切换一定卡住。</span></div></div>
     <div class="kill"><span class="ic">06</span><div><b>本体 90mAh 电池，10g / 直径 23.2mm / IPX4 / 8 小时</b><span>别想从豆子取电驱动外设。另外：48g、60×60×14.95mm 是<b>充电盒</b>的参数，引用错了现场会被拆穿。</span></div></div>
@@ -230,16 +230,16 @@ footer a{color:var(--steel)}
   <table>
     <thead><tr><th style="width:96px">赛道</th><th style="width:150px">队伍</th><th style="width:58px">人数</th><th>方向</th></tr></thead>
     <tbody>
-      <tr style="background:var(--steel-soft)"><td rowspan="4"><b>智能录音</b><br><span style="font-size:11px;color:var(--ink-3)">你的赛道</span></td><td><b>千帆共创</b> T-035</td><td class="mono">2/4</td><td>保险业 agent，已有保险业专家，缺硬件。<b>方向最明确的一支。</b></td></tr>
-      <tr style="background:var(--steel-soft)"><td><b>待定</b> T-043</td><td class="mono">1/4</td><td>双相情感障碍可穿戴，语音捕捉情绪信号预判躁狂/抑郁。自述大厂产品背景，找端侧算法合伙人。</td></tr>
-      <tr style="background:var(--steel-soft)"><td><b>X</b> T-045</td><td class="mono">1/4</td><td>方向未定。招「文科生，感性大于理性，做产品故事架构」。</td></tr>
-      <tr style="background:var(--steel-soft)"><td><b>IRIS</b> T-047</td><td class="mono">1/4</td><td>Intelligent Research and Index System。仍在组队 + idea 打磨阶段，技术方案与产品形态都没定。</td></tr>
-      <tr><td rowspan="3">智能安防</td><td><b>待定</b> T-036</td><td class="mono">1/4</td><td>「主人不在家时，怎么让养猫更安心」。全场自述履历最强的人，见下。</td></tr>
-      <tr><td><b>魔法科技</b> T-042</td><td class="mono">3/4</td><td>已满员。招募描述仅「熟悉嵌入式技术」。</td></tr>
-      <tr><td><b>映照</b> T-046</td><td class="mono">2/4</td><td>主题「看见彼此」。</td></tr>
-      <tr><td rowspan="2">充电储能</td><td><b>超环电泵队</b> T-037</td><td class="mono">4/4</td><td>已满员，全场唯一满编队伍。</td></tr>
+      <tr style="background:var(--steel-soft)"><td rowspan="4"><b>智能录音</b><br><span style="font-size:11px;color:var(--ink-3)">你的赛道</span></td><td><b>千帆共创</b> T-035<br><span style="font-size:11.5px;color:var(--ink-3)">杨凯迪 / 李乃琪</span></td><td class="mono">2/4</td><td>保险业 agent，已有保险业专家，缺硬件。<b>方向最明确的一支。</b></td></tr>
+      <tr style="background:var(--steel-soft)"><td><b>待定</b> T-043<br><span style="font-size:11.5px;color:var(--ink-3)">Feishu_5733</span></td><td class="mono">1/4</td><td>双相情感障碍可穿戴，语音捕捉情绪信号预判躁狂/抑郁。自述大厂产品背景，找端侧算法合伙人。</td></tr>
+      <tr style="background:var(--steel-soft)"><td><b>X</b> T-045<br><span style="font-size:11.5px;color:var(--ink-3)">kevin</span></td><td class="mono">1/4</td><td>方向未定。招「文科生，感性大于理性，做产品故事架构」。</td></tr>
+      <tr style="background:var(--steel-soft)"><td><b>IRIS</b> T-047<br><span style="font-size:11.5px;color:var(--ink-3)">用户142892</span></td><td class="mono">1/4</td><td>Intelligent Research and Index System。仍在组队 + idea 打磨阶段，技术方案与产品形态都没定。</td></tr>
+      <tr><td rowspan="3">智能安防</td><td><b>待定</b> T-036<br><span style="font-size:11.5px;color:var(--ink-3)">奚钰淇</span></td><td class="mono">1/4</td><td>「主人不在家时，怎么让养猫更安心」。全场自述履历最强的人，见下。</td></tr>
+      <tr><td><b>魔法科技</b> T-042<br><span style="font-size:11.5px;color:var(--ink-3)">果志铜 / 吴轩昂 / yy</span></td><td class="mono">3/4</td><td>已满员。招募描述仅「熟悉嵌入式技术」。</td></tr>
+      <tr><td><b>映照</b> T-046<br><span style="font-size:11.5px;color:var(--ink-3)">他山之石 / muddy</span></td><td class="mono">2/4</td><td>主题「看见彼此」。</td></tr>
+      <tr><td rowspan="2">充电储能</td><td><b>超环电泵队</b> T-037<br><span style="font-size:11.5px;color:var(--ink-3)">陈传淇 等</span></td><td class="mono">4/4</td><td>已满员，全场唯一满编队伍。</td></tr>
       <tr><td><b>喜欢拿*砸键盘</b> T-040</td><td class="mono">1/4</td><td>需求描述原文：「我不到啊」。</td></tr>
-      <tr><td>智能服务</td><td><b>哈吉米</b> T-044</td><td class="mono">2/4</td><td>NFC + AI + 移动电源 + 低功耗传感器，解决「人与 AI 的最后 1cm」。</td></tr>
+      <tr><td>智能服务</td><td><b>哈吉米</b> T-044<br><span style="font-size:11.5px;color:var(--ink-3)">黄崇晓 / Cecily</span></td><td class="mono">2/4</td><td>NFC + AI + 移动电源 + 低功耗传感器，解决「人与 AI 的最后 1cm」。</td></tr>
     </tbody>
   </table>
   </div>
@@ -252,21 +252,21 @@ footer a{color:var(--steel)}
   <table>
     <thead><tr><th style="width:230px">自述</th><th>公开网页能核到什么</th><th style="width:88px">判定</th></tr></thead>
     <tbody>
-      <tr><td colspan="3" style="background:var(--sunk)"><b>选手 A</b>（群内发帖）—— ，尚未进组队大厅，方向不限。<b>录音赛道最大的变量</b></td></tr>
+      <tr><td colspan="3" style="background:var(--sunk)"><b>Shawn</b> —— 群内发帖，尚未进组队大厅，方向不限。<b>录音赛道最大的变量</b></td></tr>
       <tr><td>前安克 er，水手计划 &amp; 火种计划 GTM</td><td>安克确有「火种计划」内部选拔外派海外 GTM，公开稿件未点名</td><td><b>机制属实<br>个人未证</b></td></tr>
       <tr><td>南客松 S1 &amp; S2 Agent-network 金奖，项目 Token bank</td><td>南客松真实存在（南京，2025 鼓楼 / 2026 建邺）。公开报道的金奖项目里<b>没有 Token bank</b>。另有独立站 tokenbank.dev 做 AI token 额度市场，语义接近但无法钉死同一作品</td><td><b>对不上</b></td></tr>
       <tr><td>AdventureX 25 &amp; 26，Fiona 人脸机器人，地瓜三等奖 + 小红书三等奖 + 主赛道第四</td><td>AdventureX 真实存在，公开 gallery 里确有用地瓜机器人做人脸追踪的作品，但名字是 <b>Mechanical Heart / smartbot，不是 Fiona</b></td><td><b>对不上</b></td></tr>
       <tr><td>OKX 黑客松最高现实世界采用奖，项目 Murmray</td><td>OKX 确实办过多次黑客松，公开获奖名单里<b>没有 Murmray</b></td><td><b>对不上</b></td></tr>
       <tr><td>公众号《肖恩的部落格》，写安克财报分析</td><td>检索不到能唯一对应的已验证公号主页</td><td><b>未证</b></td></tr>
       <tr style="background:var(--warn-soft)"><td><b>逆向过飞书录音豆、钉钉 A1、Plaud 协议</b></td><td>这三款设备均为 2025–2026 公开在售，被社区逆向不稀奇。但细节只存在于他的自述</td><td><b>未证<br>但影响最大</b></td></tr>
-      <tr><td colspan="3" style="background:var(--sunk)"><b>选手 B</b> —— T-036 智能安防，不在你的直接赛道</td></tr>
+      <tr><td colspan="3" style="background:var(--sunk)"><b>奚钰淇</b> —— T-036 智能安防，不在你的直接赛道</td></tr>
       <tr><td>巴黎 iGEM 国际金奖</td><td>iGEM 总决赛确在巴黎，深圳多校近年有金银奖，公开名单<b>未出现该姓名</b></td><td><b>对不上</b></td></tr>
       <tr><td>2026.8 香港 Physical AI Hackathon 队长，赛道 Top 2，「遗族情绪安抚 AI 硬件」</td><td>该赛事 2026 年 8 月首届真实举办（48 小时、具身方向）。公开报道写了化妆机械臂等获奖项目，<b>未点名该作品或姓名</b></td><td><b>赛事属实<br>项目未证</b></td></tr>
       <tr><td>深圳科创学院创业者 / 奇绩 S26</td><td>两个机构都真实且确在孵化 AI+硬件方向，但学员名单均不公开点名</td><td><b>无法核实</b></td></tr>
     </tbody>
   </table>
   </div>
-  <div class="note-src">其余队伍（千帆共创、魔法科技、映照、超环电泵队、哈吉米）的成员姓名在公开网页上均无法唯一对应到创业或黑客松报道；多数队长使用飞书匿名号（匿名号、匿名号、飞书用户4935GR），本身就没有可检索的公开足迹。<b>本节只整理参赛者自己贴在公开组队大厅与官方群内的招募信息，以及能在公开网页交叉到的部分，不涉及私人联系方式与未公开账号。</b></div>
+  <div class="note-src">其余队伍（千帆共创、魔法科技、映照、超环电泵队、哈吉米）的成员姓名在公开网页上均无法唯一对应到创业或黑客松报道；多数队长使用飞书匿名号（Feishu_5733、用户142892、飞书用户4935GR），本身就没有可检索的公开足迹。<b>本节只整理参赛者自己贴在公开组队大厅与官方群内的招募信息，以及能在公开网页交叉到的部分，不涉及私人联系方式与未公开账号。</b></div>
 </section>
 
 <section>
@@ -312,7 +312,7 @@ footer a{color:var(--steel)}
       <div class="body">
         <div class="row"><dt>技术依据</dt><dd>社区逆向文档记录 <code>0x1A / 0x07</code> payload 第 9 字节 <code>realtimeFlag == 1</code> 即实时流，已有四个独立第三方实现跑通。</dd></div>
         <div class="row"><dt>为什么会输</dt><dd><b>协议支持 ≠ SDK 透出。</b>决赛你手上是主办方发的带 license 的 SDK，绕过它用逆向协议，评审席上坐着安克工程师——这是政治问题不只是技术问题。</dd></div>
-        <div class="row"><dt>许可证陷阱</dt><dd>tacshi 无 license（保留全部权利，只能读不能抄）；andrewseago 是 GPL-3.0、mic-rs 是 AGPL-3.0（传染性）；<b>只有 该选手-TKD/recording-bean-web 是 MIT 可用</b>，但它是 Web Bluetooth，iPhone 上跑不了。</dd></div>
+        <div class="row"><dt>许可证陷阱</dt><dd>tacshi 无 license（保留全部权利，只能读不能抄）；andrewseago 是 GPL-3.0、mic-rs 是 AGPL-3.0（传染性）；<b>只有 Shawn-TKD/recording-bean-web 是 MIT 可用</b>，但它是 Web Bluetooth，iPhone 上跑不了。</dd></div>
         <div class="row"><dt>正确用法</dt><dd>降级成方向二里的一段话 + 30 秒飞行模式演示，用最低成本吃掉这个方向 80% 的战略分。</dd></div>
       </div>
     </div>
