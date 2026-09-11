@@ -14,6 +14,7 @@
     python listen.py score abnormal.wav          # 打分
     python listen.py record 30 normal.wav        # 用麦克风录 30 秒
     python listen.py watch                       # 实时监听（分段拉取，模拟设备行为）
+    python listen.py stream abnormal.wav         # 按 SDK 20ms 分片节奏逐片喂入（含 Opus 往返）
 """
 import subprocess, sys, json, os
 import numpy as np
@@ -153,6 +154,39 @@ class Detector:
         return fired
 
 
+class StreamDetector(Detector):
+    """
+    吃 20ms 分片的流式检测器，模拟 SDK onReceiveAudioFragment 的输入节奏。
+    设备原生 Opus 16kHz 20ms 帧 = 320 samples，跟 SR=16000 一致，不用重采样。
+    维护一个滑动缓冲，每帧特征只算一次；分片边界不影响结果。
+    """
+
+    CHUNK = SR * 20 // 1000  # 320
+
+    def __init__(self, tpl, thr, **kw):
+        super().__init__(tpl, thr, **kw)
+        self.buf = np.zeros(0, dtype=np.float32)
+        self.last = 0.0   # 最近处理的帧的平均分，给可视化用
+
+    def feed_chunk(self, chunk):
+        """喂一个分片，返回是否触发。缓冲不足一帧时返回 False。"""
+        self.buf = np.concatenate([self.buf, chunk.astype(np.float32)])
+        if len(self.buf) < N_FFT:
+            return False
+        n = 1 + (len(self.buf) - N_FFT) // HOP
+        seg = self.buf[: N_FFT + (n - 1) * HOP]
+        self.last = float(score(seg, self.tpl).mean())
+        fired = self.feed(seg)
+        self.buf = self.buf[n * HOP:]          # 前移，保留 N_FFT-HOP 的重叠给下一帧
+        return fired
+
+
+def chunks(x, size=StreamDetector.CHUNK):
+    """把整段音频切成 SDK 分片大小，最后不足一片的丢弃（真设备也不会发半片）。"""
+    for i in range(0, len(x) - size + 1, size):
+        yield x[i:i + size]
+
+
 # ---------- 合成信号（自检与无素材演示用） ----------
 
 def synth(seconds=4.0, kind="normal", seed=0):
@@ -202,6 +236,16 @@ def cmd_selftest():
     print(f"  压缩后分离度   {sep_o:.1f}×（压缩前 {sep:.1f}×，保留 {sep_o / sep * 100:.0f}%）")
     assert sep_o > 1.5, f"Opus 压缩把可分性吃掉了（{sep_o:.1f}×）——真机上要改用瞬态特征"
     print("  结论           合成信号上压缩不致命 ✓（真机仍须用真实录音复验）")
+
+    # 流式 = 批式：同一段音频，20ms 分片逐个喂，触发结果必须一致
+    print("\n流式：模拟 SDK 20ms 分片回调")
+    sd_ok = StreamDetector(tpl, thr)
+    sd_bad = StreamDetector(tpl, thr)
+    hit_ok = any(sd_ok.feed_chunk(c) for c in chunks(normal2))
+    bad_at = next((i for i, c in enumerate(chunks(o_ab)) if sd_bad.feed_chunk(c)), None)
+    assert not hit_ok, "流式：正常声误报"
+    assert bad_at is not None, "流式：异常声漏报"
+    print(f"  正常声 {len(normal2) // StreamDetector.CHUNK} 片不报 ✓  异常声第 {bad_at} 片触发（{bad_at * 20} ms）✓")
     print("\n全部通过。")
 
 
@@ -237,6 +281,24 @@ def cmd_score(path):
     print("判定：" + ("异常 ⚠" if Detector(tpl, thr).feed(decode(path)) else "正常"))
 
 
+def cmd_stream(path, opus=True):
+    """
+    把一段录音按 SDK 分片节奏喂给检测器，逐片打印分数。
+    默认先做 Opus 往返，模拟设备端编码——这是 10/16 那天真实回调里的数据。
+    """
+    tpl = json.load(open(TEMPLATE))
+    x = decode(path)
+    if opus:
+        x = opus_roundtrip(x)
+    d = StreamDetector(tpl, tpl["threshold"])
+    thr = tpl["threshold"]
+    print(f"阈值 {thr:.3f}   {'片#':>5} {'时刻':>7}  分数")
+    for i, c in enumerate(chunks(x)):
+        hit = d.feed_chunk(c)
+        bar = "█" * min(int(d.last / thr * 10), 40)   # 阈值 = 10 格
+        print(f"{'':13}{i:>5} {i * 20:>6}ms  {d.last:6.3f} {bar}" + ("  ⚠ 触发" if hit else ""))
+
+
 def cmd_watch(chunk=2.0):
     """分段拉取，模拟录音豆的真实行为（SDK 没有实时流，只能短周期启停）。"""
     tpl = json.load(open(TEMPLATE))
@@ -270,5 +332,7 @@ if __name__ == "__main__":
         record(float(a[1]), a[2])
     elif a[0] == "watch":
         cmd_watch(float(a[1]) if len(a) > 1 else 2.0)
+    elif a[0] == "stream":
+        cmd_stream(a[1], opus="--raw" not in a)
     else:
         print(__doc__)

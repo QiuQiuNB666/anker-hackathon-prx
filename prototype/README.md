@@ -44,6 +44,7 @@ Anker 黑客松 · 智能录音赛道 · PRX
 .venv/bin/python listen.py record 10 test.wav     # 制造异常再录
 .venv/bin/python listen.py score test.wav
 .venv/bin/python listen.py watch                  # 实时监听
+.venv/bin/python listen.py stream test.wav        # 按 SDK 20ms 分片节奏逐片喂入
 ```
 
 家里的风扇、抽油烟机、洗衣机、冰箱压缩机都是合格的实验对象。制造异常：往扇叶塞纸片、放个硬物进滚筒、松开一颗螺丝。
@@ -54,7 +55,9 @@ Anker 黑客松 · 智能录音赛道 · PRX
 
 **音频 I/O 全部交给 ffmpeg**，Python 只吃裸 PCM，依赖只剩 numpy。绕开 librosa 是因为它拖 numba，而 numba 对 Python 3.14 支持滞后。副作用是这套代码在任何装了 ffmpeg 的机器上都能跑。
 
-**`watch` 用分段录制而不是流式**，是刻意模拟录音豆的真实行为 —— 官方 SDK 没有实时音频流，只能短周期启停录音再拉文件。现在就按这个约束写，10/16 那天只需把输入源从麦克风换成设备。
+**`StreamDetector` 对应 SDK 的 `onReceiveAudioFragment` 回调。** 9/11 从官方 Demo 代码核实：设备原生 Opus 16kHz 双声道 20ms 帧，有实时分片回调（README 没写，代码里有）。`feed_chunk()` 每次吃 320 个采样点，维护滑动缓冲，每帧特征只算一次，分片边界不影响结果。自检里验证了流式与批式触发一致。10/16 那天只需把 `chunks(wav)` 换成真回调。
+
+`watch` 用分段录制，是设备 SDK 核实之前的保守设计，现在保留作为无设备时的兜底。
 
 **检测器是阈值 + 迟滞 + 冷却三个旋钮**，不是一个准确率数字。路演被问误报率时答机制，不要编百分比。
 
@@ -63,4 +66,5 @@ Anker 黑客松 · 智能录音赛道 · PRX
 - [ ] 用真实机器跑一遍，看 log-mel 模板在环境噪声下是否稳
 - [ ] 拿到设备后用真实录音复跑 `opus` 实验
 - [ ] 接执行层：智能插座断电 / 推送
-- [ ] 双击标记 → 在线学习（把当前片段加进模板）
+- [ ] 双击标记 → 在线学习：`onReceiveAudioFragment` 的 `isMark` 标志对应的分片加进模板
+- [x] 流式接口（`StreamDetector`），对应 SDK 实时分片回调
