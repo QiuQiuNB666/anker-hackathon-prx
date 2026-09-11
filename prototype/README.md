@@ -36,6 +36,31 @@ Anker 黑客松 · 智能录音赛道 · PRX
 
 合成信号上 16k 仍保留 93%，但真机的降噪才是真正的威胁 —— 拿到设备后必须用真实录音复验。
 
+## 端到端：手机 → WebSocket → 检测器
+
+10/16 那天的数据链已经在本机跑通，只差把假设备换成真回调。
+
+```bash
+.venv/bin/python server.py                                     # 起服务端 :8765
+.venv/bin/python fake_bean.py samples/demo_abnormal.wav --mark 2.5   # 另开终端，模拟录音豆
+```
+
+`fake_bean.py` 把 WAV 编成设备格式——CBR 64k、20ms、16kHz 双声道，每包恒 160 字节——按 50 片/秒推给服务端。`server.py` 用 opuslib 解码、喂 `StreamDetector`、触发时打印。
+
+帧格式（与 Android 侧约定，见 `docs/04-决赛/SDK接入清单.md` 第三节）：
+
+```
+[type u8][fileId i32 LE][seq i32 LE][flags u8][payload]
+type 0 = 设备 Opus 160B    type 1 = 手机麦 PCM16 mono（兜底）
+flags bit0 = isMark        bit1 = isAppendPreAudio（跳过）
+```
+
+**决赛 17:00 切兜底 = 客户端把 type 从 0 改 1**，服务端一行不动。`fake_bean.py --pcm` 就是在演这条路。
+
+手机侧不解码，160 字节原样转发，`adb reverse tcp:8765 tcp:8765` 走 USB 不吃现场 WiFi。
+
+> uvloop 0.22 在 Python 3.14 上会静默卡死（进程活着、不绑端口、零输出）。`server.py` 里已固定 `loop=asyncio http=h11`，别用裸 `uvicorn server:app`。
+
 ## 用真实机器试
 
 ```bash
@@ -68,3 +93,5 @@ Anker 黑客松 · 智能录音赛道 · PRX
 - [ ] 接执行层：智能插座断电 / 推送
 - [ ] 双击标记 → 在线学习：`onReceiveAudioFragment` 的 `isMark` 标志对应的分片加进模板
 - [x] 流式接口（`StreamDetector`），对应 SDK 实时分片回调
+- [x] 服务端 + 假设备，手机→WS→解码→检测 端到端跑通，Opus 与 PCM 兜底两条路都验过
+- [ ] Android 侧：前台服务 + OkHttp WebSocket 发送端（`docs/04-决赛/SDK接入清单.md` 第五节 1–4、7）
