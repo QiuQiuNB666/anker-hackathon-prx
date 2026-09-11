@@ -23,7 +23,7 @@ SR = 16000
 N_FFT = 1024
 HOP = 256
 N_MELS = 40
-TEMPLATE = "template.json"
+TEMPLATE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "template.json")  # 跟脚本走，不跟 cwd 走
 
 
 # ---------- ffmpeg 音频 I/O ----------
