@@ -1,0 +1,351 @@
+<title>预赛冲刺日历</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --paper:#F6F6F4; --panel:#FFFFFF; --sunk:#ECECE8;
+  --ink:#15171A; --ink-2:#454A50; --ink-3:#7A8088;
+  --rule:#DCDCD7; --rule-2:#C5C5BF;
+  --ink-key:#28506E; --key-soft:#E3ECF3;
+  --hot:#A33527; --hot-soft:#F8E6E2;
+  --ok:#2C6349; --ok-soft:#E2EEE8;
+  --warn:#8C6510; --warn-soft:#F7EEDA;
+  --me:#28506E; --ace:#6B3E8C; --busy:#7A7A72; --helper:#2C6349;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#101214; --panel:#181B1E; --sunk:#1F2326;
+    --ink:#EDEFF1; --ink-2:#AEB4BA; --ink-3:#7C838A;
+    --rule:#282D31; --rule-2:#383E44;
+    --ink-key:#7FADD4; --key-soft:#16242F;
+    --hot:#E4826F; --hot-soft:#331B17;
+    --ok:#6DBE95; --ok-soft:#14271E;
+    --warn:#D6A83F; --warn-soft:#2B2411;
+    --me:#7FADD4; --ace:#B58BD4; --busy:#8A8A82; --helper:#6DBE95;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101214; --panel:#181B1E; --sunk:#1F2326;
+  --ink:#EDEFF1; --ink-2:#AEB4BA; --ink-3:#7C838A;
+  --rule:#282D31; --rule-2:#383E44;
+  --ink-key:#7FADD4; --key-soft:#16242F;
+  --hot:#E4826F; --hot-soft:#331B17;
+  --ok:#6DBE95; --ok-soft:#14271E;
+  --warn:#D6A83F; --warn-soft:#2B2411;
+  --me:#7FADD4; --ace:#B58BD4; --busy:#8A8A82; --helper:#6DBE95;
+}
+*{box-sizing:border-box}
+body{background:var(--paper); color:var(--ink); margin:0;
+  font-family:"Noto Sans SC",-apple-system,"PingFang SC",sans-serif; font-size:15px; line-height:1.7;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:960px; margin:0 auto; padding:0 24px 90px}
+h1,h2,h3{font-family:"Noto Serif SC",Georgia,"Songti SC",serif; margin:0; text-wrap:balance}
+.mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace; font-variant-numeric:tabular-nums}
+
+.mast{padding:48px 0 22px; border-bottom:2px solid var(--ink)}
+.kick{font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--ink-key); font-weight:700; margin-bottom:12px}
+.mast h1{font-size:clamp(27px,5vw,40px); font-weight:700; line-height:1.2}
+.count{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px;
+  background:var(--rule); border:1px solid var(--rule); margin-top:26px}
+.cd{background:var(--panel); padding:15px 18px}
+.cd .l{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-3); margin-bottom:7px}
+.cd .v{font-size:15px; font-weight:700; display:flex; align-items:baseline; gap:6px}
+.cd .v b{font-family:"JetBrains Mono",monospace; font-size:30px; line-height:1; color:var(--ink-key)}
+.cd.hot{background:var(--hot-soft)} .cd.hot .v b{color:var(--hot)}
+.cd .s{font-size:12px; color:var(--ink-3); margin-top:4px}
+
+section{margin-top:50px}
+.sh{display:flex; align-items:baseline; gap:12px; border-bottom:1px solid var(--rule-2);
+  padding-bottom:9px; margin-bottom:17px}
+.sh .n{font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; color:var(--ink-key); flex:none}
+.sh h2{font-size:20px; font-weight:700}
+.lede{color:var(--ink-2); font-size:14.5px; max-width:64ch; margin:0 0 18px}
+
+.bars{display:grid; gap:11px}
+.bar{display:grid; grid-template-columns:120px 1fr 46px; gap:14px; align-items:center; font-size:13.5px}
+.bar .t{color:var(--ink-2)}
+.bar .track{height:9px; background:var(--sunk); position:relative; overflow:hidden}
+.bar .fill{position:absolute; inset:0 auto 0 0; background:var(--c)}
+.bar .p{font-family:"JetBrains Mono",monospace; font-size:12.5px; text-align:right; color:var(--c); font-weight:700}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse; width:100%; font-size:13.5px}
+th{background:var(--sunk); text-align:left; font-weight:700; font-size:11.5px;
+  letter-spacing:.05em; padding:9px 12px; border:1px solid var(--rule)}
+td{padding:10px 12px; border:1px solid var(--rule); vertical-align:top; color:var(--ink-2)}
+td b{color:var(--ink)}
+
+.now{display:grid; gap:10px}
+.ni{display:grid; grid-template-columns:auto 1fr; gap:13px; align-items:start;
+  border:1px solid var(--hot); background:var(--hot-soft); padding:13px 16px}
+.ni .m{font-family:"JetBrains Mono",monospace; font-weight:700; color:var(--hot); font-size:12px; line-height:1.8; flex:none}
+.ni b{display:block; margin-bottom:2px}
+.ni span{font-size:13px; color:var(--ink-2)}
+
+.who{display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:13px}
+.p{border:1px solid var(--rule-2); border-top:4px solid var(--c); background:var(--panel); padding:15px 17px}
+.p .tag{font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--c); font-weight:700}
+.p h3{font-size:16px; margin:5px 0 3px}
+.p .load{font-size:12px; color:var(--ink-3); margin-bottom:10px; font-family:"JetBrains Mono",monospace}
+.p ul{margin:0; padding-left:16px; font-size:13px; color:var(--ink-2)}
+.p li{margin-bottom:6px}
+.p li b{color:var(--ink)}
+
+.cal{display:grid; gap:0; border-top:1px solid var(--rule)}
+.day{display:grid; grid-template-columns:86px 1fr; gap:16px; padding:12px 0; border-bottom:1px solid var(--rule)}
+.day .d{font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:700; color:var(--ink-key); white-space:nowrap}
+.day .d em{display:block; font-style:normal; font-size:11px; color:var(--ink-3); font-weight:400; margin-top:1px}
+.day .body{display:grid; gap:6px}
+.day .row{display:grid; grid-template-columns:58px 1fr; gap:11px; font-size:13.5px; align-items:baseline}
+.day .row .w{font-family:"JetBrains Mono",monospace; font-size:10.5px; font-weight:700;
+  letter-spacing:.08em; color:var(--c); padding-top:2px}
+.day .row .x{color:var(--ink-2)}
+.day .row .x b{color:var(--ink)}
+.day.gate{background:var(--hot-soft); margin:0 -14px; padding-left:14px; padding-right:14px}
+.day.gate .d{color:var(--hot)}
+.day.rest{background:var(--sunk); margin:0 -14px; padding-left:14px; padding-right:14px}
+
+.flag{border:1px solid var(--warn); background:var(--warn-soft); padding:13px 16px; font-size:13.5px; margin-top:17px}
+.flag b{color:var(--warn)}
+.flag.hot{border-color:var(--hot); background:var(--hot-soft)} .flag.hot b{color:var(--hot)}
+.flag.ok{border-color:var(--ok); background:var(--ok-soft)} .flag.ok b{color:var(--ok)}
+code{font-family:"JetBrains Mono",monospace; font-size:12.5px; background:var(--sunk); padding:1px 5px}
+footer{margin-top:56px; padding-top:18px; border-top:1px solid var(--rule); font-size:12px; color:var(--ink-3)}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kick">PRX · 2026-09-14 制定</div>
+  <h1>13 天，把一份文档写出来</h1>
+  <div class="count">
+    <div class="cd hot"><div class="l">预赛 + 报名双截止</div><div class="v"><b>13</b>天</div><div class="s">9月27日 23:59 · 逾期不受理</div></div>
+    <div class="cd"><div class="l">公布入围 30 强</div><div class="v"><b>16</b>天</div><div class="s">9月30日 · 队长 48h 内确认</div></div>
+    <div class="cd"><div class="l">线下决赛</div><div class="v"><b>32</b>天</div><div class="s">10月16–17日 · 深圳 · 24 小时</div></div>
+  </div>
+</header>
+
+<section>
+  <div class="sh"><span class="n">01</span><h2>进度实况</h2></div>
+  <p class="lede">按「能不能在 9/27 交出预赛文档」这一个标准算。情报做得很足，但真正要交的东西还没开始——这是当前最大的失衡。</p>
+  <div class="bars">
+    <div class="bar" style="--c:var(--ok)"><span class="t">情报与调研</span><span class="track"><span class="fill" style="width:95%"></span></span><span class="p">95%</span></div>
+    <div class="bar" style="--c:var(--ok)"><span class="t">SDK 摸底</span><span class="track"><span class="fill" style="width:90%"></span></span><span class="p">90%</span></div>
+    <div class="bar" style="--c:var(--ink-key)"><span class="t">Python 侧原型</span><span class="track"><span class="fill" style="width:80%"></span></span><span class="p">80%</span></div>
+    <div class="bar" style="--c:var(--warn)"><span class="t">技术验证（真机）</span><span class="track"><span class="fill" style="width:15%"></span></span><span class="p">15%</span></div>
+    <div class="bar" style="--c:var(--hot)"><span class="t">方向决策</span><span class="track"><span class="fill" style="width:0%"></span></span><span class="p">0%</span></div>
+    <div class="bar" style="--c:var(--hot)"><span class="t">预赛文档</span><span class="track"><span class="fill" style="width:0%"></span></span><span class="p">0%</span></div>
+    <div class="bar" style="--c:var(--hot)"><span class="t">队伍登记与全员报名</span><span class="track"><span class="fill" style="width:25%"></span></span><span class="p">?</span></div>
+  </div>
+  <div class="flag ok"><b>好消息：预赛不看代码、不看硬件、不看设备。</b>五个评审维度（选题明确度 / 方案清晰度 / 项目创新性 / 落地可行性 / 团队能力）全部由文档体现。<b>13 天写 6–8 页，时间是够的。</b>硬件和 Android 接入是给决赛用的，9/30 入围后还有 16 天。</div>
+  <div class="flag hot"><b>坏消息：方向没定，文档就一个字都写不了。</b>而方向已经摇摆五天——听诊器 → 防霸凌 → 教育插件。<b>每拖一天，所有人都在空转。</b></div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">02</span><h2>今天必须做的三件事</h2></div>
+  <div class="now">
+    <div class="ni"><span class="m">01</span><div><b>确认四个人都单独报了名</b><span>五分钟的事，但漏一个<b>整队无法提交预赛</b>，9/27 之后无补救。报名表 <code>anker-in.feishu.cn/share/base/form/shrcnyFAWjMEOrM9o7h4d1oXrAe</code>。你自己 9/8 已报，另外三人逐个问，要截图不要口头确认。</span></div></div>
+    <div class="ni"><span class="m">02</span><div><b>把方向定下来</b><span>今晚或明天，不能再拖。三个候选的量化对比见第 03 节。<b>定不下来就用默认值：听诊器</b>——它的原型已端到端跑通，是唯一有存量资产的方向。</span></div></div>
+    <div class="ni"><span class="m">03</span><div><b>技术大佬认领 Android</b><span>他忙，所以只给他一件事，而且是最不可替代的那件。把 <code>docs/04-决赛/SDK接入清单.md</code> 甩给他——16 步调用序列带文件行号、坑位 S/A/B 分级、无设备可先写的七项。<b>他能异步做，不需要连续时间。</b></span></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">03</span><h2>方向：今天怎么定</h2></div>
+  <p class="lede">不用再开调研了，三个方向的证据都齐了。按预赛五维度打分，满分 5。</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th style="width:150px">维度</th><th style="width:80px">听诊器</th><th style="width:80px">防霸凌</th><th style="width:80px">教育插件</th><th>差在哪</th></tr></thead>
+    <tbody>
+      <tr><td><b>选题明确度</b></td><td class="mono">4</td><td class="mono">5</td><td class="mono">2</td><td>防霸凌的社会叙事最强；教育插件是「谁的什么痛点」说不清</td></tr>
+      <tr><td><b>方案清晰度</b></td><td class="mono">5</td><td class="mono">4</td><td class="mono">3</td><td>听诊器有端到端跑通的管线可以画进文档</td></tr>
+      <tr><td><b>项目创新性</b></td><td class="mono">5</td><td class="mono">4</td><td class="mono">1</td><td>非语音声学是品类真空；<b>课堂纪要撞官方原话「而非仅转为静态文档」</b></td></tr>
+      <tr style="background:var(--key-soft)"><td><b>落地可行性</b></td><td class="mono"><b>5</b></td><td class="mono"><b>2</b></td><td class="mono">4</td><td>听诊器不训练模型、不打板；防霸凌合规防守要占一整页，且三大风险只能试点回答</td></tr>
+      <tr><td><b>团队能力</b></td><td class="mono">4</td><td class="mono">4</td><td class="mono">4</td><td>三者差别不大</td></tr>
+      <tr style="background:var(--ok-soft)"><td><b>合计</b></td><td class="mono"><b>23</b></td><td class="mono"><b>19</b></td><td class="mono"><b>14</b></td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="flag"><b>还有一条不在评分表里、但决定 24 小时成败的：存量资产。</b>听诊器的 Python 侧已经跑通（流式检测 + WebSocket 管道 + Opus 解码 + PCM 兜底），换方向等于把这些扔掉重来。<b>13 天里，从零验证一个新方向的风险远大于叙事上的收益。</b></div>
+  <div class="flag hot"><b>如果队友坚持防霸凌</b>——有个不用吵架的折中：<b>形态不变，叙事重心变。</b>保留防霸凌的合规设计，但把文档主体从「防霸凌硬件」移到「把说不清的事变成能交出去的事实陈述」这个 agent 闭环上。合规防守压成一页，风险显著下降。详见防霸凌定型文档第 07 节。</div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">04</span><h2>四个人怎么分</h2></div>
+  <p class="lede">原则只有一条：<b>忙的人只做不可替代的事，不忙的人做需要连续投入的事。</b>不要给忙的人排需要每天跟进的活。</p>
+  <div class="who">
+    <div class="p" style="--c:var(--me)">
+      <div class="tag">你 · 不忙 · 技术强</div>
+      <h3>主笔 + 后端</h3>
+      <div class="load">投入最大，全程在线</div>
+      <ul>
+        <li><b>预赛文档主笔</b>——这是唯一的交付物，必须一个人统稿</li>
+        <li>Python 侧原型收尾（已 80%）</li>
+        <li>对外口径：群里问官方、催资料包</li>
+        <li>每天 21:00 收一次进度</li>
+      </ul>
+    </div>
+    <div class="p" style="--c:var(--ace)">
+      <div class="tag">技术大佬 · 忙</div>
+      <h3>Android + SDK</h3>
+      <div class="load">只给一件事，可异步</div>
+      <ul>
+        <li><b>Android 工程 + 两个 aar 链接</b>，跑到 logcat 出 SDK 日志即可</li>
+        <li>前台服务骨架 + OkHttp WebSocket 发送端</li>
+        <li><b>不需要设备、不需要 license</b>——接入清单第五节列了七项可先写的</li>
+        <li>交付时间：9/30 前，不卡预赛</li>
+      </ul>
+    </div>
+    <div class="p" style="--c:var(--helper)">
+      <div class="tag">另一位 · 不忙 · 技术弱些</div>
+      <h3>访谈 + 硬件 + 素材</h3>
+      <div class="load">花时间但不难，价值高</div>
+      <ul>
+        <li><b>5 个真实用户访谈</b>（30 分钟一个）——「选题明确度」这一维最硬的弹药，也是决赛问答的子弹</li>
+        <li>录真实机器声：抽油烟机、洗衣机、冰箱压缩机，正常 + 异常各一段</li>
+        <li>Tinkercad 建托座（半小时上手，不用 Blender）</li>
+        <li>竞品体验：借一台 Plaud 或录音豆试用</li>
+      </ul>
+    </div>
+    <div class="p" style="--c:var(--busy)">
+      <div class="tag">第四位 · 忙</div>
+      <h3>路演 + 视觉</h3>
+      <div class="load">最后一周才需要投入</div>
+      <ul>
+        <li>9/22 之前：<b>不用管</b>，让他忙他的</li>
+        <li>9/22 起：PPT（不超过 6 页）、演示脚本、录 demo 视频</li>
+        <li>团队里<b>必须有一个人的角色写成「路演」</b>——含演讲角色的均衡配置几乎总是胜过全技术队伍</li>
+      </ul>
+    </div>
+  </div>
+  <div class="flag"><b>预赛文档「团队能力」那一栏怎么写：</b>表格四列——姓名 / 角色 / 本项目负责模块 / <b>既往证据</b>。具体项目名 + 模块数量比「N 年经验」有力十倍。<b>如果四个人全是工程师，也要指定一个人的角色写成「路演与用户访谈」。</b></div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">05</span><h2>13 天日历</h2></div>
+  <p class="lede">留了两天缓冲。<b>每天只有一件「必须完成」的事</b>，做完就收工，不要贪。</p>
+  <div class="cal">
+    <div class="day gate">
+      <div class="d">9/14<em>今天 · 周一</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--hot)"><span class="w">全员</span><span class="x"><b>确认四人都已报名</b>，要截图</span></div>
+        <div class="row" style="--c:var(--hot)"><span class="w">决策</span><span class="x"><b>定方向</b>（定不下来 = 默认听诊器）</span></div>
+        <div class="row" style="--c:var(--ace)"><span class="w">大佬</span><span class="x">认领 Android，拿到接入清单</span></div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">9/15<em>周二</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--me)"><span class="w">你</span><span class="x"><b>文档骨架</b>：五个维度的标题 + 每节要点，先搭架子不填字</span></div>
+        <div class="row" style="--c:var(--helper)"><span class="w">助手</span><span class="x">约访谈对象（车间管理员 / 设备维修工，约 5 个）</span></div>
+        <div class="row" style="--c:var(--me)"><span class="w">你</span><span class="x">如果走听诊器：下单一颗录音豆（到货 2–3 天）</span></div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">9/16<em>周三</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--me)"><span class="w">你</span><span class="x"><b>写「选题明确度」</b>一页——谁 + 在什么时刻 + 什么坏结果，一句话开头</span></div>
+        <div class="row" style="--c:var(--helper)"><span class="w">助手</span><span class="x">录真实机器声，跑 <code>listen.py stream</code> 看逐片曲线</span></div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">9/17<em>周四</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--me)"><span class="w">你</span><span class="x"><b>写「方案清晰度」</b>——先画端到端数据流图，每个框标清在哪跑</span></div>
+        <div class="row" style="--c:var(--helper)"><span class="w">助手</span><span class="x">访谈 1–2 个，录音 + 整理要点</span></div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">9/18<em>周五</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--me)"><span class="w">你</span><span class="x"><b>写「项目创新性」</b>——只讲三个反转，讲透，不罗列功能</span></div>
+        <div class="row" style="--c:var(--ace)"><span class="w">大佬</span><span class="x">Android 工程编译通过，logcat 见 SDK 日志</span></div>
+      </div>
+    </div>
+    <div class="day gate">
+      <div class="d">9/19<em>周六 · 关口</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--hot)"><span class="w">全员</span><span class="x"><b>设备到货 → 卡尺量真实厚度</b>（13.45mm 是评测值，必须复核）</span></div>
+        <div class="row" style="--c:var(--hot)"><span class="w">生死线</span><span class="x"><b>真机录机器声 → 跑 opus 实验</b>。分离度掉到 1.5× 以下 = 当场换方向一</span></div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">9/20<em>周日</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--me)"><span class="w">你</span><span class="x"><b>写「落地可行性」</b>——小时级排期表 + 风险应对表 + 不做清单。<b>这一维决定初筛</b></span></div>
+        <div class="row" style="--c:var(--helper)"><span class="w">助手</span><span class="x">访谈 3–5 个做完</span></div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">9/21<em>周一</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--me)"><span class="w">你</span><span class="x"><b>写「团队能力」</b>半页 + 自由展示区。<b>初稿完成</b></span></div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">9/22<em>周二</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--busy)"><span class="w">第四位</span><span class="x">上线，开始做 PPT 骨架（不超过 6 页）</span></div>
+        <div class="row" style="--c:var(--me)"><span class="w">你</span><span class="x">把访谈数据填进「选题明确度」，加样本量</span></div>
+      </div>
+    </div>
+    <div class="day gate">
+      <div class="d">9/23<em>周三 · 瘦身</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--hot)"><span class="w">全员</span><span class="x"><b>承诺瘦身</b>：逐条问「10/16–17 四个人 100% 做得完吗」，做不完的<b>删掉，不是标为「如时间允许」</b></span></div>
+        <div class="row" style="--c:var(--hot)"><span class="w">纪律</span><span class="x">功能列表超过 5 条、出现「平台 / 生态 / 操作系统」= 给评委发翻车信号</span></div>
+      </div>
+    </div>
+    <div class="day">
+      <div class="d">9/24<em>周四</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--me)"><span class="w">你</span><span class="x">补数据流图、风险表、排期表三张图，文档定型到 6–8 页</span></div>
+      </div>
+    </div>
+    <div class="day gate">
+      <div class="d">9/25<em>周五 · 外部评审</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--hot)"><span class="w">测试</span><span class="x">找一个<b>不了解项目的工程师朋友</b>，只给文档，让他复述「这东西是干什么的」。<b>复述不出来 = 选题明确度不及格，回去重写第一句话</b></span></div>
+      </div>
+    </div>
+    <div class="day rest">
+      <div class="d">9/26<em>周六</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--ok)"><span class="w">缓冲</span><span class="x">改评审意见。<b>开启文档的「互联网获取链接可阅读权限」</b>——交的是链接不是附件，评审打不开等于没交</span></div>
+      </div>
+    </div>
+    <div class="day gate">
+      <div class="d">9/27<em>周日 · 截止</em></div>
+      <div class="body">
+        <div class="row" style="--c:var(--hot)"><span class="w">白天交</span><span class="x"><b>不要拖到 23:59。</b>填提交表单：队名 / 赛道 / 队长与队员的姓名+邮箱+手机号 / 文档链接</span></div>
+        <div class="row" style="--c:var(--hot)"><span class="w">校验</span><span class="x">系统逐个比对已报名池——<b>这是四人报名那件事的最终考场</b></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">06</span><h2>要不要加急</h2></div>
+  <div class="scroll">
+  <table>
+    <tbody>
+      <tr><td style="width:150px"><b>预赛文档</b></td><td><b>不用加急。</b>13 天写 6–8 页，按上面的日历一天一节，还留了两天缓冲。真正的风险不是时间不够，是<b>方向拖到第 8 天才定</b>。</td></tr>
+      <tr style="background:var(--hot-soft)"><td><b>方向决策</b></td><td><b>必须加急——今天。</b>这是唯一在阻塞所有人的事。</td></tr>
+      <tr style="background:var(--hot-soft)"><td><b>四人报名</b></td><td><b>必须加急——今天。</b>五分钟的事，漏一个整队出局。</td></tr>
+      <tr><td><b>买设备</b></td><td><b>建议本周下单。</b>入围后才发硬件（9/30），那时离决赛只剩 16 天。自己买能提前解决三件事：卡尺量真实尺寸、验证 Opus 生死线、联调 SDK。899 元，自行判断。</td></tr>
+      <tr><td><b>Android 接入</b></td><td><b>不用加急。</b>9/30 前完成即可，不卡预赛。但它<b>不需要设备也能写掉七成</b>，忙的人可以碎片时间推进。</td></tr>
+      <tr><td><b>硬件外壳</b></td><td><b>不用加急，预赛不看。</b>但拿到真机后第一时间量尺寸——两件式设计（造型件 + 可换适配环）能让造型先行、内腔后定。</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="flag ok"><b>一句话总结节奏：</b>今天定方向 + 确认报名 → 这周搭骨架并写完前三维 → 9/19 用真机把生死线验掉 → 下周写完后两维并瘦身 → 9/25 外部评审 → 9/27 白天交。<b>每天只推一节，不要贪。</b></div>
+</section>
+
+<footer>
+  制定于 2026-09-14。日历按「预赛只需要文档」这一事实倒排——五个评审维度全部由文档体现，不看代码、不看硬件、不看设备。硬件与 Android 接入是决赛物料，入围后（9/30）还有 16 天。<br>
+  三个方向的完整证据见 <code>docs/02-调研/</code>；决赛技术路径见 <code>docs/04-决赛/SDK接入清单.md</code>。
+</footer>
+
+</div>
