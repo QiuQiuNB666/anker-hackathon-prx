@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PRX 资料台</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --paper:#F6F6F4; --panel:#FFFFFF; --sunk:#ECECE8;
+  --ink:#15171A; --ink-2:#454A50; --ink-3:#7A8088;
+  --rule:#DCDCD7; --rule-2:#C5C5BF;
+  --key:#28506E; --key-soft:#E3ECF3;
+  --hot:#A33527; --hot-soft:#F8E6E2;
+  --ok:#2C6349; --ok-soft:#E2EEE8;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#101214; --panel:#181B1E; --sunk:#1F2326;
+    --ink:#EDEFF1; --ink-2:#AEB4BA; --ink-3:#7C838A;
+    --rule:#282D31; --rule-2:#383E44;
+    --key:#7FADD4; --key-soft:#16242F;
+    --hot:#E4826F; --hot-soft:#331B17;
+    --ok:#6DBE95; --ok-soft:#14271E;
+  }
+}
+*{box-sizing:border-box}
+body{background:var(--paper); color:var(--ink); margin:0;
+  font-family:"Noto Sans SC",-apple-system,"PingFang SC",sans-serif; font-size:15px; line-height:1.7;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:880px; margin:0 auto; padding:0 24px 80px}
+h1,h2,h3{font-family:"Noto Serif SC",Georgia,"Songti SC",serif; margin:0; text-wrap:balance}
+.mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace}
+
+.mast{padding:48px 0 22px; border-bottom:2px solid var(--ink)}
+.kick{font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--key); font-weight:700; margin-bottom:12px}
+.mast h1{font-size:clamp(28px,5vw,40px); font-weight:700; line-height:1.2}
+.mast p{color:var(--ink-2); margin:14px 0 0; max-width:60ch}
+
+.urgent{margin-top:26px; border:2px solid var(--hot); background:var(--hot-soft); padding:18px 22px}
+.urgent .l{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--hot); font-weight:700; margin-bottom:8px}
+.urgent h2{font-size:18px; margin-bottom:8px}
+.urgent p{margin:0; font-size:14px; color:var(--ink-2)}
+.urgent a{color:var(--hot); font-weight:700}
+
+section{margin-top:46px}
+.sh{display:flex; align-items:baseline; gap:12px; border-bottom:1px solid var(--rule-2);
+  padding-bottom:9px; margin-bottom:16px}
+.sh .n{font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; color:var(--key)}
+.sh h2{font-size:20px; font-weight:700}
+.sh .tail{margin-left:auto; font-size:12px; color:var(--ink-3)}
+
+.cards{display:grid; gap:11px}
+.c{display:block; border:1px solid var(--rule-2); background:var(--panel); padding:15px 18px;
+  text-decoration:none; color:inherit; border-left:3px solid var(--c,var(--rule-2))}
+.c:hover{border-left-color:var(--key); background:var(--key-soft)}
+.c .t{font-weight:700; font-size:15.5px; font-family:"Noto Serif SC",serif; margin-bottom:4px}
+.c .t em{font-style:normal; font-family:"JetBrains Mono",monospace; font-size:10.5px;
+  letter-spacing:.1em; color:var(--ink-3); margin-left:9px; text-transform:uppercase}
+.c .d{font-size:13.5px; color:var(--ink-2)}
+
+.flag{border:1px solid var(--rule-2); background:var(--sunk); padding:13px 16px; font-size:13.5px;
+  color:var(--ink-2); margin-top:16px}
+.flag b{color:var(--ink)}
+.flag.ok{border-color:var(--ok); background:var(--ok-soft)}
+.flag.ok b{color:var(--ok)}
+code{font-family:"JetBrains Mono",monospace; font-size:12.5px; background:var(--sunk); padding:1px 5px}
+footer{margin-top:52px; padding-top:18px; border-top:1px solid var(--rule); font-size:12px; color:var(--ink-3)}
+footer a{color:var(--key)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <div class="kick">Anker 首届黑客松挑战赛 · 智能录音赛道</div>
+  <h1>PRX 资料台</h1>
+  <p>参赛期间的全部材料：官方规则存档、竞争调研、技术原型、冲刺日程。所有官方材料经飞书 API 取回，非人工抄录。</p>
+</header>
+
+<div class="urgent">
+  <div class="l">现在最要紧的两件事</div>
+  <h2>① 每个人单独去交一遍报名表　② 定方向</h2>
+  <p>预赛提交时系统按「姓名 + 邮箱 + 手机号」逐个比对已报名池，<b>漏一个人整队交不上去，9/27 之后没有补救</b>。报名表：<a href="https://anker-in.feishu.cn/share/base/form/shrcnyFAWjMEOrM9o7h4d1oXrAe">点这里</a>，交完截图发群里。</p>
+</div>
+
+<section>
+  <div class="sh"><span class="n">01</span><h2>先看这个</h2></div>
+  <div class="cards">
+    <a class="c" style="--c:var(--hot)" href="docs/05-预赛/冲刺日历.html">
+      <div class="t">冲刺日历<em>13 天倒排</em></div>
+      <div class="d">进度实况、四个人怎么分工、每天只有一件必须完成的事、三个硬关口。<b>不知道今天该干什么就看这个。</b></div>
+    </a>
+    <a class="c" href="docs/01-官方材料/赛事流程作战板.html">
+      <div class="t">赛事流程作战板<em>规则速查</em></div>
+      <div class="d">时间线、四大赛道、预赛与决赛的评审维度、奖项、九条容易踩的坑。</div>
+    </a>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">02</span><h2>方向与打法</h2><span class="tail">方向未定 · 三选一</span></div>
+  <div class="cards">
+    <a class="c" href="docs/02-调研/打法手册.html">
+      <div class="t">打法手册<em>听诊器方向</em></div>
+      <div class="d">让录音豆去听机器不听人。设备硬约束（能直接判掉一批想法）、红海地图、三个方案方向对比、路演分镜、预赛五维度的写法。</div>
+    </a>
+    <a class="c" href="docs/02-调研/防霸凌方案定型.html">
+      <div class="t">防霸凌方案定型<em>已降级为备选</em></div>
+      <div class="d">法律红线（有生效刑事判决）、产品定义、建模参数与禁止遮挡清单、路演设计。第 00 节是「被霸凌的人不可能会按」的实证核查。</div>
+    </a>
+    <a class="c" href="docs/03-对手/组队大厅快照.md">
+      <div class="t">同场对手<em>10 支队伍</em></div>
+      <div class="d">赛道分布与各队方向。智能录音这条最挤，4 支，但没有一支方案锁死。</div>
+    </a>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">03</span><h2>官方材料原文</h2><span class="tail">只读 · 不要改</span></div>
+  <div class="cards">
+    <a class="c" href="docs/01-官方材料/赛事细则.md">
+      <div class="t">赛事细则<em>12206 字</em></div>
+      <div class="d">报名到颁奖的全流程规则。所有争议以这份为准。</div>
+    </a>
+    <a class="c" href="docs/01-官方材料/预赛材料模板.md">
+      <div class="t">预赛材料模板<em>要交的东西</em></div>
+      <div class="d">官方模板骨架，三个必填模块。注意：提交前<b>必须开启文档的「互联网获取链接可阅读权限」</b>，交的是链接不是附件。</div>
+    </a>
+    <a class="c" href="docs/01-官方材料/命题解析夜-直播纪要.md">
+      <div class="t">命题解析夜纪要<em>9/9 直播</em></div>
+      <div class="d">四大赛题一次讲透。红线原文：所有场景必须确保被录人知情。评分导向原文：音频作为 AI agent 输入实现任务闭环，而非仅转为静态文档。</div>
+    </a>
+    <a class="c" href="docs/01-官方材料/FAQ.md">
+      <div class="t">官方 FAQ<em>17 条</em></div>
+      <div class="d">报名、预赛、评审入围、线下决赛、工具与开发五个分类。</div>
+    </a>
+    <a class="c" href="docs/01-官方材料/SDK能力核实.md">
+      <div class="t">SDK 能力核实<em>从代码反推</em></div>
+      <div class="d">官方 README 的能力清单不完整。实时音频流、标记回调、按键事件全部存在，完整接口清单在这里。</div>
+    </a>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">04</span><h2>技术</h2></div>
+  <div class="cards">
+    <a class="c" style="--c:var(--ok)" href="https://github.com/QiuQiuNB666/anker-hackathon-prx/tree/main/prototype">
+      <div class="t">听诊器原型<em>能跑</em></div>
+      <div class="d">30 秒示教建立机器声纹基线，异响触发。流式检测对应 SDK 实时分片回调；服务端 + 假设备已端到端跑通，Opus 与手机麦兜底两条路都验过。依赖只有 numpy。</div>
+    </a>
+    <a class="c" href="docs/04-决赛/SDK接入清单.md">
+      <div class="t">决赛 SDK 接入清单<em>给技术大佬</em></div>
+      <div class="d">从 SDK 初始化到第一个实时分片的 16 步调用序列（带文件行号）、坑位 S/A/B 分级、<b>无设备无 license 就能先写好的七项</b>、决赛当天 17:00 关口的 5 条打勾项。</div>
+    </a>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="n">05</span><h2>怎么改这里的东西</h2></div>
+  <div class="flag ok"><b>预赛文档不要在这个仓库写。</b>官方要的是一个飞书文档链接，而且全队要同时改——直接开一份飞书文档，所有人在线协同，交的时候把链接填进提交表单即可。这个仓库放的是<b>调研存档、代码、和已经定稿的东西</b>。</div>
+  <div class="flag"><b>要讨论方向或方案</b>：在飞书群里说，或者在文档上划词评论。异步讨论方向永远定不下来——<b>方向这种事需要一次 30 分钟的同步会</b>。</div>
+  <div class="flag"><b>要改这个仓库里的文件</b>：<code>.md</code> 可以直接在 GitHub 网页上点铅笔图标改，会自动建 commit。<code>.html</code> 是生成的，别手改——告诉队长，让他重新生成。</div>
+</section>
+
+<footer>
+  仓库：<a href="https://github.com/QiuQiuNB666/anker-hackathon-prx">github.com/QiuQiuNB666/anker-hackathon-prx</a>　·　公开仓库，第三方个人信息已全部脱敏<br>
+  官方材料经飞书开放平台 API 取回（bitable / docx / wiki 接口），可复现。调研结论均经独立事实核查，标注 UNVERIFIABLE 的条目在正文中有标记。
+</footer>
+
+</div>
+</body>
+</html>
