@@ -12,7 +12,7 @@
 | 坑的多少 | 致命坑 2 个（`TODO()` 崩、license 原文），其余都是"静默不工作"可查日志 | 致命坑：`mCurrentSyncAudioFile` 为 null 时 KMP 层 NPE，iOS 上 fatal 不可 catch（`RecordingFilesViewModel.swift:1199-1201, 1230-1231`）；MFi/EASession 建不起来 acquire 不报错也没数据（`$HDR:8209-8220`）；`UIBackgroundModes` 无 `bluetooth-central`（`Info.plist:71-74`）；TEAM_ID 空、需付费开发者账号（`Configuration/Config.xcconfig:1`） | Android 胜。Android 版 SDK 对同一情况是打 log 后挂起 pending 自动补拉列表（`D3200Device.acquireRealtimeAudioData` 字节码），**[不确定]** 两端 SDK 版本可能不同步 |
 | 实时流路径清晰度 | 5 个前置条件全部可从日志判断：鉴权 / connect / `mCurrentRecordingStatus==1` / 文件 ID 已知 / savaPath 可写（见第二节） | 同样 5 条但设备通知 → SDK 写 fileID 这一步在 iOS 上不可见（adapter 把 fileID 丢了 `BusinessCallbackAdapter.swift:59-64`） | Android 胜 |
 | Opus 解码便利性 | 自带 `libs/opus-lib-0.0.2.aar`（JNI，`AudioTranscoder.kt:40,90-96` 有调用签名） | 无任何解码器，要 SPM 引 libopus | 平局——**推荐两端都不解码，160 字节直接转发给 Python**（第三节） |
-| 队长技能 | Kotlin + Gradle，Android Studio 一台 Windows/Mac 都行；已有 Foreground Service 套路 | Xcode + Swift + CocoaPods 1.16 + Apple 签名链 | Android 胜 |
+| 球球的技能 | Kotlin + Gradle，Android Studio 一台 Windows/Mac 都行；已有 Foreground Service 套路 | Xcode + Swift + CocoaPods 1.16 + Apple 签名链 | Android 胜 |
 
 额外加分：Android SDK 的 `proxy.resumeRecord` 在字节码里就是 `device.startRecord()` → `AUDIO_CONTROL 0x01`（`SDKManagerImp.resumeRecord → D3200Device.startRecord → AudioEventSendManager.startRecord`）。**[不确定]** 固件是否接受从 STOP 冷启动录音，但如果成立，"录音只能物理按键发起"这个前提被推翻，可以纯 App 自动开始监听。iOS 端 `SoundcoreViewModel.swift:515-518` 同样调 `sdk.resumeRecord`，没验证过。
 
@@ -51,7 +51,7 @@
 
 **audioData 是什么**：一片 = 解密后的**裸 Opus packet**，恒 160 字节 = 20ms（SDK 内部 166 字节链路包 → `decryptDataChunk` → 160；`AudioTranscoder.kt:33-37` 的 bitrate=64000/frameDuration=20/perFileSize=160 三者自洽：64000×0.02/8=160，CBR）。16kHz 双声道（`AudioTranscoder.kt:27,39`；`$HDR:892`）。无 Ogg 页、无长度前缀，一次回调就是一个 `opus_decode` 输入。每秒 50 片。`isAppendPreAudio=true` 的片是续传/前置缓冲（两处文档解释不同 `$HDR:893` vs `:1343-1346`），**检测器一律跳过**。
 
-**最省事的方案：手机不解码，160 字节原样转发给队长的 FastAPI**
+**最省事的方案：手机不解码，160 字节原样转发给球球的 FastAPI**
 
 理由：opus-lib JNI 在 Demo 里 decode 返回值到底是 320 还是 640 未验证（`AudioTranscoder.kt:99,104`），x86 模拟器一碰就 `UnsatisfiedLinkError`；而 Python 侧 `opuslib` 一行解完，还能离线用文件回放调参。
 
